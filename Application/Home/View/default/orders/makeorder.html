@@ -1,0 +1,77 @@
+<extend name="Base/common"/>
+
+<block name="body">
+  <div class="content paddingWidth" style="padding-top:20px;">
+   
+   <form action="{:U()}" method="post" class="order-form" id="createform">
+      <h2 class="createform-heading">结算</h2>
+        <div id="addressinput" class="panel panel-default" style="">
+
+			<!--address-->
+			<button type="button" id="new_address" class="btn btn-warning btn-sm mb10" style="margin-bottom:10px;" onclick="location.href='{:U('user/address')}'">新增地址</button>
+			<div id="addressdiv" class="panel panel-default">
+					 
+			<div class="panel-heading">收货地址</div>
+				<empty name="address">
+					<ul id="addressmsg" class="list-group">
+						<li class="addressli list-group-item cursor_hand">你还没有地址哦，<a href="{:U('user/address')}">添加地址</a>吧。</li>
+					</ul>
+				<else/>
+					<input type="hidden" name="address" value="{$address['id']}"/>
+					<ul id="addressmsg" class="list-group">
+						<li class="addressli list-group-item cursor_hand" style="background-color: rgb(236, 236, 236);">
+							<dl class=" dl-horizontal">
+								<dt class="">收货人：</dt><dd class="recv_name">{:get_user_info($address['uid'],name)}</dd>
+								<dt>详细地址：</dt>
+								<dd><php>echo $address['country']. $address['province'].$address['city'].$address['district'].'·'.$address['address']</php></dd>
+								<dt>收货人电话：</dt>
+								<dd class="recv_phone">{$address.mobile}</dd>
+							</dl>
+						</li>
+					</ul>
+				</empty>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">买家备注</div>
+
+				<div class="panel-body">
+					<textarea name="content" class="form-control" type="text" style="width:500px; margin-bottom:12px;"></textarea>
+					<p class="small">温馨提示：买家在对购买产品时有什么问题或要求可以填写在备注内（200汉字 ）</p>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">购买物品</div>
+				<table class="table" id="setItem">
+					<thead>
+						<tr class="text-center">
+							<th class="text-left">商品</th>
+							<th class="text-center">单价</th>
+							<th class="text-center">数量</th>
+							<th class="text-center">小计</th>
+						</tr>
+					</thead>
+					<tbody class="table-hover">
+						<volist name="lists" id="vo">
+							<tr class="text-center">
+								<td class="text-left">{$vo.title}</td>
+								<td class="goodprice" price="4700">{$vo.price|get_format_price}</td>
+								<td class="goodtotal">{$vo.qty}</td>
+								<td class="goodpricetotal" sku="1" freefare="0">{$vo.subTotal|get_format_price}</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>  
+                <div class="form-group">
+                    <label for="phone" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                    	<div class="notice2 text-center" style="margin:0px auto;width:60%"></div>
+	                    <input class="btn btn-lg btn-primary btn-block J_ajax_post" type="submit" id="submit"  style="width: 150px;" value="提交订单" target-form='order-form'/>
+	                </div>
+                    <div class="clear"></div>
+                </div>
+			</div>
+		</form>
+   </div>
+</block>

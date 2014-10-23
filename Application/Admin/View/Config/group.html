@@ -1,0 +1,121 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+	<div class="g-wrap">
+		<ul class="u-tab">
+			<volist name="Think.config.CONFIG_GROUP_LIST" id="group">
+				<li <eq name="id" value="$key">class="current"</eq>><a href="{:U('?id='.$key)}">{$group}配置</a></li>
+			</volist>
+		</ul>
+		<div class="tab-content">
+			<form action="{:U('save')}" method="post" class="form-horizontal">
+			<div class="table_list">
+			<table cellpadding="0" cellspacing="0" class="table_form"
+			width="100%">
+			<tbody>
+			<empty name="img">
+				<volist name="list" id="config">
+						<tr>
+							<td width="12%"><label class="item-label">{$config.title}</label></td>
+						
+							<switch name="config.type">
+								<case value="0">
+									<td width="88%"><input type="text" class="input input-large" name="config[{$config.name}]" value="{$config.value}"><span class="check-tips">{$config.remark}</span> </td>
+								</case>
+								<case value="1">
+									<td width="88%"><input type="text" class="input input-large" name="config[{$config.name}]" value="{$config.value}"><span class="check-tips">{$config.remark}</span> </td>
+								</case>
+								<case value="2">
+									<td width="88%"><label class="inputarea input-large">
+										<textarea name="config[{$config.name}]">{$config.value}</textarea>
+									</label><span class="check-tips">{$config.remark}</span> </td>
+								</case>
+								<case value="3">
+									<td width="88%"><label class="inputarea input-xxxlarge">
+										<textarea name="config[{$config.name}]">{$config.value}</textarea>
+									</label><span class="check-tips">{$config.remark}</span> </td>
+								</case>
+								<case value="4">
+									<td width="88%"><select name="config[{$config.name}]">
+										<volist name=":parse_config_attr($config['extra'])" id="vo">
+											<option value="{$key}" <eq name="config.value" value="$key">selected</eq>>{$vo}</option>
+										</volist>
+									</select><span class="check-tips">{$config.remark}</span> </td>
+								</case>
+								<case value="5">
+									<td width="88%">
+										<div class="controls">
+												<input type="file" id="upload_picture_{$config.name}">
+												<input type="hidden" name="config[{$config.name}]" id="cover_id_{$config.name}" value="{$config.value}"/>
+												<div class="upload-img-box">
+												<notempty name="config.value">
+													<div class="upload-pre-item"><img src="{$config.value|get_product_image}" width="120
+													" height="75"/></div>
+												</notempty>
+												</div>
+											</div>
+											<script type="text/javascript">
+											//上传图片
+										    /* 初始化上传插件 */
+											$("#upload_picture_{$config.name}").uploadify({
+										        "height"          : 30,
+										        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+										        "fileObjName"     : "download",
+										        "buttonText"      : "上传图片",
+										        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+										        "width"           : 120,
+										        'removeTimeout'	  : 1,
+										        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+										        "onUploadSuccess" : uploadPicture{$config.name},
+										        'onFallback' : function() {
+										            alert('未检测到兼容版本的Flash.');
+										        }
+										    });
+											function uploadPicture{$config.name}(file, data){
+										    	var data = $.parseJSON(data);
+										    	var src = '';
+										        if(data.status){
+										        	$("#cover_id_{$config.name}").val(data.id);
+										        	src = data.url || '__ROOT__' + data.path
+										        	$("#cover_id_{$config.name}").parent().find('.upload-img-box').html(
+										        		'<div class="upload-pre-item"><img src="__ROOT__' + src + '" width="120" height="75"/></div>'
+										        	);
+										        } else {
+										        	updateAlert(data.info);
+										        	setTimeout(function(){
+										                $('#top-alert').find('button').click();
+										                $(that).removeClass('disabled').prop('disabled',false);
+										            },1500);
+										        }
+										    }
+										</script> 
+									</td>
+								</case>
+							</switch>
+						</tr>
+				</volist>
+			<else/>
+				<tr>
+					<td>aa</td>
+				</tr>
+			</empty>
+			</tbody>
+			</table>
+				<div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+		          		<a class="btn btn_small J_ajax_get" href="{:U('Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+						<empty name="list"><button type="submit" disabled class="btn_submit disabled" target-form="form-horizontal">确 定</button><else/><button type="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button></empty>
+						
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+						<a href="{:U('Admin/Config/add')}" class="btn">添加配置</a>
+		          </div>
+		        </div>
+			</form>
+		</div>
+	</div>
+</block>
+
+<block name="script">
+
+</block>

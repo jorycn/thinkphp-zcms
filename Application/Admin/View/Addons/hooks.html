@@ -1,0 +1,55 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc">
+		      <li class="current"><a href="javascript:;">钩子列表</a></li>
+		    </ul>
+		</div>
+		<!-- 数据表格 -->
+	    <div class="table_list">
+			<table width="100%">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>名称</th>
+						<th>描述</th>
+						<th>类型</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="list" id="vo">
+						<tr>
+							<td>{$vo.id}</td>
+							<td><a href="{:U('edithook?id='.$vo['id'])}">{$vo.name}</a></td>
+							<td>{$vo.description}</td>
+							<td>{$vo.type_text}</td>
+							<td>
+								<a title="编辑" href="{:U('edithook?id='.$vo['id'])}">编辑</a>
+								<a class="confirm J_ajax_get" title="删除" href="{:U('delhook?id='.$vo['id'])}">删除</a>
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table> 
+		</div>
+		<div class="btn_wrap">
+            <div class="btn_wrap_pd">
+            	<a class="btn btn_small J_ajax_get" href="{:U('Admin/Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+            <?php if (IS_ROOT): ?>
+				<a class="btn btn_submit" href="{:U('addhook')}">新 增</a>
+			<?php endif ?>
+            </div>
+        </div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$_page}
+	    </div>
+	</div>
+</div>
+
+</block>
+

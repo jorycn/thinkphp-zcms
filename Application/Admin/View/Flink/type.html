@@ -1,0 +1,64 @@
+<extend name="Public/base"/>
+<block name="body">
+	<div class="g-wrap">
+		<div class="u-tab">
+		    <ul class="cc">
+		      <li class="current"><a href="javasctipt:;">友链分组管理 </a></li>
+		      <li><a href="{:U('addType')}">添加分组</a></li>
+		    </ul>
+		</div>
+        <div class="common-form">
+            <div class="table_list u-table-left j-hidden-level">
+                <table width="100%">
+                <thead>
+                  <tr>
+                    <th width="100">ID</th>
+                    <th>栏目名称</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <volist name="lists" id="vo">
+                    	<tr>
+                    		<td>{$vo.id}</td>
+                    		<td>{$vo.title}</td>
+                    		<td>{$vo.status|get_status_title}</td>
+                    		<td>
+                    			<a href="{:U('Flink/editType?id='.$vo['id'])}">修改</a>
+                    			<a href="{:U('Flink/deleteType?id='.$vo['id'])}" class="J_ajax_get">删除</a>
+                    		</td>
+                    	</tr>
+                    </volist>
+                </tbody>
+                </table>
+            </div>
+        </div>
+	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		(function($){
+	      var $level = $(".j-hidden-level table").find("tbody tr");
+	      $level.each(function(){
+	          var $this_level = $(this).attr('data-parentid');
+	          if($this_level=='0'){
+	              $(this).show();
+	          }
+	          if($(this).next('tr').attr('data-parentid')>$this_level){
+	            $(this).find('td:eq(2)').append("&nbsp;&nbsp;<i class='fa fa-caret-right'></i>");
+	          }
+	          if($(this).next('tr').attr('data-parentid')>0){
+	             $(this).addClass('hand');
+	             $(this).click(function(){
+	                var $i = $(this).find('i');
+	                $i.toggleClass('fa-caret-right');
+	                $i.toggleClass('fa-caret-down');
+	                $(this).nextAll('tr[data-parentid='+$(this).attr('data-id')+']').toggle();
+	             })
+	          }
+	      });
+		})(jQuery);
+	</script>
+</block>

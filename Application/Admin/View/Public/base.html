@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+<meta charset="utf-8">
+<title><notempty name="meta_title">{$meta_title} - </notempty>网站后台管理系统</title>
+<meta name="description" content="This is page-header (.page-header &gt; h1)">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{:C('ADMIN_CSS')}/reset.css" rel="stylesheet">
+<!--[if lt IE 8]>
+<link rel="stylesheet" href="__STATIC__/fontawesome/css/font-awesome-ie7.min.css">
+<!<![endif]-->
+<link rel="stylesheet" href="__STATIC__/fontawesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="{:C('ADMIN_CSS')}/ace.min.css">
+<link rel="stylesheet" href="{:C('ADMIN_CSS')}/reset.css">
+<link rel="stylesheet" href="{:C('ADMIN_CSS')}/style.css">
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
+<![endif]--><!--[if gte IE 9]><!-->
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="{:C('ADMIN_JS')}/jquery.mousewheel.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="__STATIC__/jquery.pin.min.js"></script>
+<block name="style"></block>
+</head>
+<body style="" screen_capture_injected="true">
+    <php>
+        if($_GET['menuId']){
+            cookie('menuid',$_GET['menuId']);
+        }
+    </php>
+    <div class="navbar">
+        <div class="container-fluid navbar-inner">
+            <a href="#" class="brand">华商动力 技术支持</a>
+            <div class="user-bar j_user_bar">
+                <a href="#" class="dropdown-toggle">
+                    <img class="nav-user-photo" src="{:C('ADMIN_IMG')}/user.jpg" alt="admin">
+                    <span class="user-info">
+                        <small>欢迎,</small>{:session('user_auth.username')}
+                    </span>
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="j_user_menu user-menu hidden">
+                    <li><a href="{:U('Admin/User/updatePassword')}"><i class="fa fa-cog"></i>修改密码</a></li>
+                    <li><a href="{:U('Admin/User/updateNickname')}"><i class="fa fa-user"></i>修改昵称</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{:U('Admin/Public/logout')}">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="main-container container-fluid">
+        <a class="menu-toggler" id="menu-toggler"
+            href="#">
+            <span class="menu-text"></span>
+        </a>
+        <div class="sidebar" id="sidebar">
+            <div class="j_pin">
+                <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                    <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                        <a class="u-btn-index u-btn-small u-btn-success" href="__ROOT__/" title="前台首页" target="_blank">
+                            <i class="fa fa-home"></i>
+                        </a>
+                        <a class="u-btn-index u-btn-small u-btn-warning" href="{:U('Admin/Category/index?id=80')}" title="分类管理">
+                            <i class="fa fa-sitemap"></i>
+                        </a>
+                        <a class="u-btn-index u-btn-small u-btn-info" href="{:U('Admin/article/mydocument?id=3')}" title="文章管理">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <a class="u-btn-index u-btn-small u-btn-danger" href="{:U('Admin/index/clean')}" title="清除缓存">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </div>
+
+                    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                        <span class="u-btn u-btn-success"></span> <span class="u-btn u-btn-info"></span>
+
+                        <span class="u-btn u-btn-warning"></span> <span class="u-btn u-btn-danger"></span>
+                    </div>
+                </div>
+                <div class="sidebar-collapse">
+                    <i class="fa fa-angle-double-left"></i>
+                </div>
+                <div id="nav_wraper">
+                    <ul class="nav nav-list">
+                        <input type="hidden" name="menuid" id="j_menuid" value="{:cookie('menuid')}">
+                        <empty name="Menu"><p class="red p10">管理员尚未分组，请联系超级管理员分配权限！</p></empty>
+                        <volist name="Menu" id="menu">
+                            <php>if($menu['child']):</php>
+                            <li>
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="fa {$menu.ico}"></i>
+                                    <span class="menu-text">{$menu.title}</span>
+                                    <b class="arrow fa fa-angle-down"></b>
+                                </a>
+                                <ul class="submenu" id="submenu_{$menu.id}">
+                                    <volist name="menu.child" id="second_menu">
+                                        <php>$third_cate = get_child_category($second_menu['id'])</php>
+                                        <php>if($third_cate):</php>
+                                            <li id="submenu_{$second_menu.id}">
+                                                <a href="#" class="dropdown-toggle">
+                                                    <i class="fa {$second_menu.ico}"></i>
+                                                    <span class="menu-text">{$second_menu.title}</span>
+                                                    <b class="arrow fa fa-angle-down"></b>
+                                                </a>
+                                                <ul class="submenu" id="submenu_{$second_menu.id}">
+                                                    <volist name="third_cate" id="third_menu">
+                                                        <li id="submenu_{$third_menu.id}">
+                                                            <a href="{:U($third_menu['module'].'/'.$third_menu['url'],array('menuId'=>$third_menu['id']))}">
+                                                                <i class="fa {$third_menu.ico}"></i>
+                                                                <span class="menu-text">{$third_menu.title}</span>
+                                                            </a>
+                                                        </li>
+                                                    </volist>
+                                                </ul>
+                                            </li>
+                                        <php>else:</php>
+                                            <li id="submenu_{$second_menu.id}">
+                                                <a href="{:U($second_menu['module'].'/'.$second_menu['url'],array('menuId'=>$second_menu['id']))}">
+                                                    <i class="fa {$second_menu.ico}"></i>
+                                                    <span class="menu-text">{$second_menu.title}</span>
+                                                </a>
+                                            </li>
+                                        <php>endif;</php>
+                                    </volist>
+                                </ul>
+                            </li>
+                            <php>else:</php>
+                            <li>
+                                <a href="javascript:openapp('{$menu.url|U}','{$menu.id}','{$menu.title}');">
+                                    <i class="fa {$menu.ico}"></i>
+                                    <span class="menu-text">{$menu.title}</span>
+                                </a>
+                            </li>
+                            <php>endif;</php>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="breadcrumbs j_pin" id="breadcrumbs">
+                <a id="task-pre" class="task-changebt">←</a>
+                <div id="task-content">
+                <?php $hotkey = json_decode(cookie('Admin_hotkey'),true);?>
+                <ul class="macro-component-tab" id="task-content-inner">
+                    <li class="macro-component-tabitem noclose" app-id="0" app-url="{:u('main/index')}" app-name="首页">
+                        <a href="{:U('Index/index')}"><span class="macro-tabs-item-text">首页</span></a>
+                    </li>
+                    <volist name="hotkey" id="vo">
+                        <li class="macro-component-tabitem noclose">
+                            <a href="{:U('Index/cutkey',array('title'=>$key))}" class="J_ajax_get"><i class="fa fa-times-circle u-close"></i></a>
+                            <a href="{$vo.url}"><span class="macro-tabs-item-text">{$vo.title}</span></a>
+                        </li>
+                    </volist>
+                </ul>
+                <div style="clear:both;"></div>
+                </div>
+                <a id="task-next" class="task-changebt">→</a>
+            </div>
+            <div id="top-alert" class="fixed alert g-message" style="display: none;">
+                <i class="fa fa-times-circle close"></i>
+                <div class="alert-content">这是内容</div>
+            </div>
+            <block name="body"></block>
+        </div>
+    </div>
+
+    <script src="{:C('ADMIN_JS')}/ace-elements.min.js"></script>
+    <script src="{:C('ADMIN_JS')}/ace.min.js"></script>
+    
+    <script type="text/javascript">
+        $(".j_pin").pin({containerSelector: ".main-container"});
+        $(function() {
+            window.prettyPrint && prettyPrint();
+            $('#id-check-horizontal')
+                .removeAttr('checked')
+                .on(
+                    'click',
+                    function() {
+                    $('#dt-list-1')
+                    .toggleClass('dl-horizontal')
+                    .prev()
+                    .html(
+                    this.checked ? '&lt;dl class="dl-horizontal"&gt;'
+                            : '&lt;dl&gt;');
+                    });
+
+            //鼠标滑过显示选项
+            $('.j_user_bar').on('mouseenter',function(){
+                $(this).find(".j_user_menu").show();
+            });
+            $('.j_user_bar').on('mouseleave',function(){
+                $(this).find(".j_user_menu").hide();
+            });
+
+        })
+    </script>
+    <!-- /内容区 -->
+    <script type="text/javascript">
+    (function(){
+        var ThinkPHP = window.Think = {
+            "ROOT"   : "__ROOT__", //当前网站地址
+            "APP"    : "__APP__", //当前项目地址
+            "PUBLIC" : "__PUBLIC__", //项目公共目录地址
+            "DEEP"   : "{:C('URL_PATHINFO_DEPR')}", //PATHINFO分割符
+            "MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+            "VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"]
+        }
+    })();
+    </script>
+    <script type="text/javascript" src="__STATIC__/think.js"></script>
+    <script type="text/javascript" src="{:C('ADMIN_JS')}/common.js"></script>
+    <block name="script"></block>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <!-- 主体 -->
+    {:hook('AdminIndex')}
+</block>
+
+<block name="script">
+<script type="text/javascript">
+    /* 插件块关闭操作 */
+    $(".title-opt .wm-slide").each(function(){
+        $(this).click(function(){
+            $(this).closest(".columns-mod").find(".bd").toggle();
+            $(this).find("i").toggleClass("mod-up");
+        });
+    })
+</script>
+</block>

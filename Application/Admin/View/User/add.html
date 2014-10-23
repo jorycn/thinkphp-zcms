@@ -1,0 +1,44 @@
+<extend name="Public/base" />
+
+<block name="body">
+    <!-- 标题栏 -->
+
+        <div class="g-wrap tab-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+                <li data-tab="tab1" class="current"><a href="javascript:void(0);">新增用户</a></li>
+            </ul>
+        </div>
+        <div class="common-form tab-content">
+            <form action="{:U()}" method="post" class="form-horizontal">
+                <div id="tab1" class="tab-pane in tab1 table_list">
+                    <table width="100%">
+                    <tbody>
+                        <tr>
+                          <td width="12%"><label class="item-label">用户名:</label></td>
+                          <td width="88%"><input type="text" class="input input-large" name="username" value=""></td>
+                        </tr>
+                        <tr>
+                          <td width="12%">密码:</td>
+                          <td width="88%"><input type="password" class="input input-large" name="password" value=""></td>
+                        </tr>
+                        <tr>
+                          <td width="12%">确认密码:</td>
+                          <td width="88%"><input type="password" class="input input-large" name="repassword" value=""></td>
+                        </tr>
+                        <tr>
+                          <td width="12%">邮箱</td>
+                          <td width="88%"><input type="text" class="input input-large" name="email" value=""></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <div class="btn_wrap">
+                  <div class="btn_wrap_pd">
+                        <button class="btn submit-btn J_ajax_post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+</block>

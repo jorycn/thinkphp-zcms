@@ -1,0 +1,103 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc tab-nav">
+				<li data-tab="tab"><a href="javascript:void(0);">留言管理</a></li>
+		    </ul>
+		</div>
+		<!-- 数据表格 -->
+		<div class="tab-content table_list">
+		<!-- 表单 -->
+		<form id="form" action="{:U('editPost')}" method="post" class="form-horizontal">
+				<div id="tab" class="tab-pane tab">
+					<table class="" width="100%">
+				    <tbody>
+						<tr>
+				            <td width="20%"><label class="item-label">标题<span class="check-tips"></span></label></td>
+				            <td width="80%"><input name="msg[title]" value="{$msg.title}" class="input input-medium"/></td>
+						</tr>
+						<tr>
+				            <td width="20%"><label class="item-label">姓名<span class="check-tips"></span></label></td>
+				            <td width="80%"><input name="msg[name]" value="{$msg.name}" /></td>
+						</tr>
+						<tr>
+				            <td width="20%"><label class="item-label">邮箱<span class="check-tips"></span></label></td>
+				            <td width="80%"><input name="msg[email]" value="{$msg.email}" /></td>
+						</tr>
+						<tr>
+				            <td width="20%"><label class="item-label">电话<span class="check-tips"></span></label></td>
+				            <td width="80%"><input name="msg[phone]" value="{$msg.phone}" /></td>
+						</tr>
+						<tr>
+				            <td width="20%"><label class="item-label">留言<span class="check-tips"></span></label></td>
+				            <td width="80%"><textarea name='msg[content]' style='width:98%;height:50px;'  >{$msg.content}</textarea> </td>
+						</tr>
+						<tr>
+				            <td width="20%"><label class="item-label">时间<span class="check-tips"></span></label></td>
+				            <td width="80%"><input type="text" name="{$field.name}" class="input input-large time" value="{$msg.date}" placeholder="请选择时间" /> </td>
+						</tr>
+					</tbody>
+				    </table> 
+				    <table width="100%">
+				    	<input type="hidden" name="reply[msg_id]" value="{$msg.id}"/>
+				    	<tr>
+				    		<th colspan="2" class="thead"><p>留言回复</p></th>
+				    	</tr>
+			            <tr>
+			              <th width="20%">管理员回复 </th>
+			              <td width="80%"><textarea name='reply[content]' style='width:98%;height:50px;'  >{$reply.content}</textarea> </td>
+			            </tr>
+			            <tr>
+			      			<th width="20%">时间</th>
+			      			<td width="80%">
+			      			<input type="text" name="reply[date]" class="input input-large time" value="{$reply.date}" placeholder="请选择时间" />
+			      			</td>
+			      		</tr>
+				    </table>
+			     </div>
+			<div class="btn_wrap">
+	          <div class="btn_wrap_pd">
+	            	<button class="btn submit-btn J_ajax_post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+					<a class="btn btn-return" href="{$Think.cookie.__forward__}">返 回</a>
+					<input type="hidden" name="id" value="{$data.id|default=''}"/>
+					<input type="hidden" name="pid" value="{$data.pid|default=''}"/>
+					<input type="hidden" name="model_id" value="{$data.model_id|default=''}"/>
+					<input type="hidden" name="category_id" value="{$data.category_id|default=''}">
+	          </div>
+	        </div>
+	    </form>
+	    </div>
+	</div>
+</div>
+
+</block>
+
+<block name="script">
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+
+Think.setValue("type", {$data.type|default='""'});
+Think.setValue("display", {$data.display|default=0});
+
+$('#submit').click(function(){
+	$('#form').submit();
+});
+
+$(function(){
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+    showTab();
+});
+</script>
+</block>

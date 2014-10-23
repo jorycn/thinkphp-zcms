@@ -1,0 +1,45 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+		<div class="g-wrap tab-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+              	<li data-tab="tab1" class="current"><a href="javascript:void(0);">基本设置</a></li>
+            </ul>
+        </div>
+        <div class="common-form tab-content">
+		    <form action="{:U()}" method="post" class="form-horizontal">
+		    	<div id="tab1" class="tab-pane in tab1 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">标题:</label></td>
+			              <td><input type="text" class="input input-large" name="title" value="{$info.title|default=''}"/></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">是否显示</td>
+			              <td>
+			              	<empty name='info.status'>
+			              		<label class="inline radio"><input type="radio" name="status" value="1" checked="checked">显示</label>
+								<label class="inline radio"><input type="radio" name="status" value="0">隐藏</label>
+			              	<else/>
+			              		<label class="inline radio"><input type="radio" name="status" value="1" <if condition='$info["status"] eq 1'>checked="checked"</if>>显示</label>
+								<label class="inline radio"><input type="radio" name="status" value="0" <if condition='$info["status"] eq 0'>checked="checked"</if>>隐藏</label>
+			              	</empty>
+						  </td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+		          		<input type="hidden" name="id" value="{$info.id}" />
+						<button type="submit" id="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          </div>
+		        </div>
+		    </form>
+    	</div>
+</block>
+

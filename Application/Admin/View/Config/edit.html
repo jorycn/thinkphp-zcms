@@ -1,0 +1,84 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+
+		<div class="g-wrap tab-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+            	<li data-tab="tab1"><a href="{:U('Admin/Config/group')}">配置管理</a></li>
+              	<li data-tab="tab1" class="current"><a href="javascript:void(0);">{$info['id']?'编辑':'新增'}配置</a></li>
+            </ul>
+        </div>
+        <div class="common-form tab-content">
+		    <form action="{:U()}" method="post" class="form-horizontal">
+		    	<div id="tab1" class="tab-pane in tab1 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td><label class="item-label">配置标识:</label></td>
+			              <td><input type="text" class="input input-large" name="name" value="{$info.name|default=''}"><span class="check-tips">用于C函数调用，只能使用英文且不能重复.一般为大写</span></td>
+			            </tr>
+			            <tr>
+			              <td>配置标题:</td>
+			              <td><input type="text" class="input input-large" name="title" value="{$info.title|default=''}"><span class="check-tips">用于后台显示的配置标题</span></td>
+			            </tr>
+			            <tr>
+			              <td>排序:</td>
+			              <td><input type="text" class="input input-small" name="sort" value="{$info.sort|default=0}"><span class="check-tips">用于分组显示的顺序</span></td>
+			            </tr>
+			            <tr>
+			              <td>配置类型</td>
+			              <td><select name="type">
+								<volist name="Think.config.CONFIG_TYPE_LIST" id="type">
+									<option value="{$key}">{$type}</option>
+								</volist>
+							</select>系统会根据不同类型解析配置值</td>
+			            </tr>
+			            <tr>
+			              <td>配置分组</td>
+			              <td><select name="group">
+								<option value="0">不分组</option>
+								<volist name="Think.config.CONFIG_GROUP_LIST" id="group">
+									<option value="{$key}">{$group}</option>
+								</volist>
+							</select><span class="check-tips">配置分组 用于批量设置 不分组则不会显示在系统设置中</span></td>
+			            </tr>
+			            <tr>
+			              	<td><label class="item-label">配置值</label></td>
+			              	<td>
+			              		<textarea name="value">{$info.value|default=''}</textarea>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td><label class="item-label">配置项</label></td>
+			              	<td>
+			              		<textarea name="extra">{$info.extra|default=''}</textarea>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td><label class="item-label">说明</label></td>
+			              	<td>
+			              		<textarea name="remark">{$info.remark|default=''}</textarea>
+							</td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+						<input type="hidden" name="id" value="{$info.id|default=''}">
+						<button class="btn submit-btn J_ajax_post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          </div>
+		        </div>
+		    </form>
+    	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		Think.setValue("type", {$info.type|default=0});
+		Think.setValue("group", {$info.group|default=0});
+	</script>
+</block>

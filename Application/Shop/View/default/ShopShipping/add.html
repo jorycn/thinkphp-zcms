@@ -1,0 +1,69 @@
+<extend name="./Application/Admin/View/Public/base.html" />
+
+<block name="body">
+	<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc tab-nav">
+				<li data-tab="tab{$key}" class="current"><a href="javascript:void(0);">{:isset($data['id'])?'编辑':'新增'}货运方式</a></li>
+		    </ul>
+		</div>
+		<!-- 数据表格 -->
+		<div class="tab-content table_list">
+		<!-- 表单 -->
+		<form id="form" action="{:U('update')}" method="post" class="form-update">
+				<table class="" width="100%">
+			    <tbody>
+			    	<tr>
+			    		<td width="20%">名称</td>
+			    		<td><input type="text" name="name" class="input input-large" value="{$data.name|default=''}"/></td>
+			    	</tr>
+			    	<tr>
+			    		<td width="20%">运费</td>
+			    		<td><input type="text" name="price" class="input input-large" value="{$data.price|default=''}"/></td>
+			    	</tr>
+			    	<tr>
+			    		<td width="20%">描述</td>
+			    		<td><textarea type="text" name="des"/>{$data.des|default=''}</textarea></td>
+			    	</tr>
+				</tbody>
+			    </table> 
+			</volist>
+			<div class="btn_wrap">
+	        	<div class="btn_wrap_pd">
+	            	<button class="btn submit-btn J_ajax_post" id="submit" type="submit" target-form="form-update">添加</button>
+					<a class="btn btn-return" href="{:U('Shop/ShopShipping?cate_id='.$cate_id)}">返 回</a>
+					<input type="hidden" name="cid" value="{$_GET['cate_id']|default=''}">
+					<input type="hidden" name="model_id" value="{$_GET['model_id']|default=''}">
+	          </div>
+	        </div>
+        </form>
+        </div>
+	</div>
+</div>
+
+</block>
+<block name="script">
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+
+$('#submit').click(function(){
+	$('#form').submit();
+});
+
+$(function(){
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+    showTab();
+});
+</script>
+</block>

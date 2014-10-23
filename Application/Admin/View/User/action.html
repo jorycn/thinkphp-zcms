@@ -1,0 +1,72 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc">
+		      <li class="current"><a href="javascript:;">行为列表</a></li>
+		    </ul>
+		</div>
+		
+		<!-- 数据表格 -->
+	    <div class="table_list">
+				<table width="100%">
+			    <thead>
+			        <tr>
+					<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+					<th class="">编号</th>
+					<th class="">标识</th>
+					<th class="">名称</th>
+					<th class="">类型</th>
+					<th class="">规则</th>
+					<th class="">状态</th>
+					<th class="">操作</th>
+					</tr>
+			    </thead>
+			    <tbody>
+					<volist name="_list" id="vo">
+					<tr>
+			            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+						<td>{$vo.id} </td>
+						<td>{$vo.name}</td>
+						<td><a href="{:U('editAction?id='.$vo['id'])}">{$vo.title}</a></td>
+						<td><span>{:get_action_type($vo['type'])}</span></td>
+						<td>{$vo.remark}</td>
+						<td>{$vo.status_text}</td>
+						<td><a href="{:U('User/editAction?id='.$vo['id'])}">编辑</a>
+							<a href="{:U('User/setStatus?Model=action&ids='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="J_ajax_get">{$vo.status|show_status_op}</a>
+							<a href="{:U('User/setStatus?Model=action&status=-1&ids='.$vo['id'])}" class="confirm J_ajax_get">删除</a>
+			                </td>
+					</tr>
+					</volist>
+				</tbody>
+			    </table> 
+		</div>
+		<div class="btn_wrap">
+			<div class="btn_wrap_pd">
+				<a class="btn btn_small J_ajax_get" href="{:U('Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+				<button class="btn" id="action_add" url="{:U('user/addaction')}">新 增</button>
+		        <button class="btn J_ajax_post" target-form="ids" url="{:u('setstatus',array('status'=>1))}" >启 用</button>
+		        <button class="btn J_ajax_post" target-form="ids" url="{:u('setstatus',array('status'=>0))}">禁 用</button>
+		        <button class="btn J_ajax_post confirm" target-form="ids" url="{:U('setStatus',array('status'=>-1))}">删 除</button>
+		    </div>
+		</div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$_page}
+	    </div>
+	</div>
+</div>
+
+</block>
+
+<block name="script">
+<script type="text/javascript">
+$(function(){
+	$("#action_add").click(function(){
+		window.location.href = $(this).attr('url');
+	})
+})
+</script>
+</block>

@@ -1,0 +1,138 @@
+﻿<extend name="Base/common" />
+
+<block name="body">
+   <div class="content paddingWidth">
+   <div class="padTop20"></div>
+      <div class="panel panel-default">
+         <div class="panel-body" style="margin-top:15px;margin-bottom:15px; ">
+          <div id="carousel-example-generic" class="carousel slide col-xs-12 col-sm 12 col-md-8 col-lg-8" data-ride="carousel" style="border-right:1px #E7E7E7 solid;">
+              <!-- Indicators -->
+              <ol class="carousel-indicators"> 
+                  <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li> 
+                  <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li> 
+                  <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li> 
+                  <li data-target="#carousel-example-generic" data-slide-to="3" class=""></li> 
+                  <li data-target="#carousel-example-generic" data-slide-to="4" class=""></li> 
+              </ol>
+            
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner"> 
+                    <div class="item active left">
+                      <img src="{$info.thumb|get_product_image}" alt="" style="width:100%">
+                    </div> 
+                    <div class="item next left">
+                      <img src="{$info.thumb|get_product_image}" alt="" style="width:100%">
+                    </div> 
+                    
+                    <div class="item">
+                      <img src="{$info.thumb|get_product_image}" alt="" style="width:100%">
+                    </div> 
+                    
+                    <div class="item">
+                      <img src="{$info.thumb|get_product_image}" alt="" style="width:100%">
+                    </div> 
+                    <div class="item">
+                      <img src="{$info.thumb|get_product_image}" alt="" style="width:100%">
+                    </div>
+              </div>
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                <span style="position:absolute; top:35%;"><img src="__IMG__/active_left.png"></span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                <span style="position:absolute; top:35%;"><img src="__IMG__/active_right.png" style="position:relative; top:60%;"></span>
+              </a>
+          </div>
+          <div class="col-xs-12 col-sm 12 col-md-4 col-lg-4">
+
+              <div style=" line-height:1.6; padding-left:0px; position:relative;">
+                <h2 style="padding-top:0px; margin-top:0px;"><b>{$info.title}</b></h2>
+                <h4>把营养好滋味剥出来</h4>
+
+                <p><br><br></p>
+                <div style="width:106%; height:60px; background-image:url(__IMG__/g_read_pirce_bg.png); position:absolute; left:0px; top:30%; background-repeat:no-repeat; background-size:100%">
+                  <p class="good_price"><span class="good_price_span">￥{$info.price|get_format_price}</span>  <span class="good_price_default">价值：<s>￥{$info.mrsp|get_format_price}</s></span></p>
+                </div>
+                
+                <p class="stocks" style="display: block;">库存：现货</p>
+                
+                <div> 
+                   <span class="spec-value cursor_hand" specid="0" stock="现货" >200g清香</span> <span style="color:#b1b1b1">|</span>
+                   <span class="spec-value cursor_hand" specid="0" stock="现货" >400g清香</span> <span style="color:#b1b1b1">|</span>
+                   <span class="spec-value cursor_hand" specid="0" stock="现货" >600g清香</span> <span style="color:#b1b1b1">|</span>
+                   <span class="spec-value cursor_hand" specid="0" stock="现货" >800g清香</span> <span style="color:#b1b1b1">|</span>
+                   <span class="spec-value cursor_hand" specid="0" stock="现货" >1000g清香</span> <span style="color:#b1b1b1">|</span> 
+                </div>
+                
+                <div style="margin-top:10px; height:24px;">
+                  <div id="buydiv" style="">
+                    <form action='{:U("Product/addcart?id=$info[id]")}' method="post" class="addcart_form">
+                      <span class="cursor_hand glyphicon glyphicon-minus j_minus"></span>
+                      <input id="qty" name="qty" class="" size="3" style="width:30px; text-align: center;" value="1" specmax="309" specstocks="291">
+                      <span class=" cursor_hand glyphicon glyphicon-plus j_plus"></span>
+                      <input href='javascript:;' type="submit" class="btn btn-warning" style="width:80px;" value="立即购买"/>
+                      <a id="addcart" href='javascript:;' class="addcart btn btn-primary J_ajax_post" target-form="addcart_form"  style="margin-left:10px;">加入购物车</a>
+                    </form>
+                  </div>
+                </div>
+
+                <div id="buyhide" style="margin-top: 20px; display: none;">
+                  <button class="disabled btn btn-primary" data-container="body" data-toggle="popover" style="display: none">已售完，正在补货中！</button>
+                </div> 
+              </div>  
+              <div style="border-top:1px #E7E7E7 solid; margin-top:30px; line-height:2.4; padding-top:20px; ">
+                <p><span>运费： </span>
+                  <span id="goodship">  
+                  满150元免运费 
+                  </span>
+                </p>
+                <p><span>配送范围： </span> 全国 </p>
+                <p><span>支付方式： </span>支付宝 、网银</p>
+                <div style="float:left;" id="brief" brief="像嗑瓜子一样吃核桃，再不需要板砖或核桃夹子。最正宗，最美味，最营养，真正的手剥核桃就在这里。">
+                </div> 
+              </div>
+          </div>
+        </div>
+      </div>
+            
+        <div class=" panel panel-default">
+          <div class="content-nav">
+              <span class="text-center goodinfo cselect">商品详情</span>
+              <span class="reply_num text-center userreply" replynum="0">用户评价</span>
+          </div> 
+          <div class="good_attrs"> 
+                  <span style="padding:10px;"><b>产品标准号 : </b>GB/T11766 GB/T19630</span> 
+                  <span style="padding:10px;"><b>储藏方法 : </b>干燥通风</span> 
+                  <span style="padding:10px;"><b>保质期 : </b>一年</span> 
+                  <span style="padding:10px;"><b>食品添加剂 : </b>无</span> 
+                  <span style="padding:10px;"><b>规格 : </b>700g</span> 
+          </div>  
+          <div id="goodmsgdiv" class="goodmsg" style="padding:20px;"> 
+              {$info.content}
+          </div>
+        </div>
+        <div id="reply_add" style="padding-top:20px;">
+          {:hook('documentDetailAfter',$info)} 
+        </div>
+      </div>  
+    </div>
+</block>
+
+<block name="script">
+  <script type="text/javascript">
+    $(function(){
+        $('.j_plus').click(function(){
+            $val = parseInt($('#qty').val());
+            $('#qty').val($val+1);
+        })
+        $('.j_minus').click(function(){
+            $val = parseInt($('#qty').val());
+            if($val>1){
+                $('#qty').val($val-1);
+            }
+        })
+    })
+  </script>
+</block>
+
+   

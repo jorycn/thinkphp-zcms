@@ -1,0 +1,175 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+			<?php 
+				$cid = session('admin_category_id');
+				$model_title = get_model_title($_GET['model_id']);
+			?>
+		    <ul class="cc">
+		      	<li class="current"><a href="javascript:;">所有{$model_title}</a></li>
+		      	<notempty name="cid">
+		    	   <li><a target="_self" href="{:U('article/add',array('term'=>$term['term_id']))}">添加{$model_title}</a></li>
+		  		</notempty>
+		    </ul>
+		</div>
+	    <div class="search_type cc mb10 search-form">
+	      <div class="mb10">
+	        <span class="mr20">分类：
+	        <select class="select_2 select" name="cate_id">
+	          	<option value='0' >全部</option>
+	          	{$category}
+	        </select>
+	        <span class="mr20">状态：
+        	<php>
+        		$all = ($status)?'selected':'';
+        		$first = ($status==1)?'selected':'';
+        		$second = ($status==2)?'selected':'';
+        	</php>
+	        <select class="select_2 select" id="sch-sort-txt" name="term">
+	          	<option value="" {$all}>全部</option>
+	          	<option value="1" {$first}>已审核</option>
+	          	<option value="2" {$second}>待审核</option>
+	        </select>
+	        &nbsp;&nbsp;时间：
+	        <input type="text" name="time-start" id="time-start" class="input length_2" value="{:I('time-start')}" style="width:80px;" autocomplete="off" placeholder="起始时间">-<span class="input-append date" id="datetimepicker"><input type="text" id="time-end" name="time-end" class="input input" value="{:I('time-end')}" placeholder="结束时间" /><span class="add-on" style="background:none;border:none;"><i class="icon-th"></i></span></span>
+	        &nbsp; &nbsp;标题：
+	        <input type="text" class="input length_2" name="title" style="width:200px;" value="{:I('title')}" placeholder="请输入标题文档">
+	        <a class="u-btn" href="javascript:;" id="search" url="{:U('article/mydocument')}">搜索</a>
+	        <!-- <a href="javascript:;" class="u-btn" onclick="{:U('post/index',array('resetFiter'=>true))}">重置</a> -->
+	        </span>
+	      </div>
+	    </div>
+		<!-- 数据表格 -->
+	    <div class="table_list">
+			<table class="" width="100%">
+		    <thead>
+		        <tr>
+				<th width="5%"><input class="check-all" type="checkbox"/></th>
+				<th width="5%">编号</th>
+				<th width="25%">标题</th>
+				<th width="12%">分类</th>
+				<th width="12%">最后更新</th>
+				<th width="5%">浏览</th>
+				<th width="5%">状态</th>
+				<th width="10%">操作</th>
+				</tr>
+		    </thead>
+		    <tbody>
+				<volist name="list" id="vo">
+				<tr>
+		            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+					<td>{$vo.id} </td>
+					<td><a href="{:U('Article/index?cate_id='.$vo['category_id'].'&pid='.$vo['id'])}">{$vo.title}</a></td>
+					<td><span>{:get_cate($vo['category_id'])}</span></td>
+					<td><span>{$vo.update_time|time_format}</span></td>
+					<td>{$vo.view}</td>
+					<?php 
+						switch ($vo['status']) {
+							case '0':
+								$sta = 'red'; //禁用
+								break;
+							case '1':
+								$sta = 'green'; //正常
+								break;
+							default:
+								$sta = '#333';
+								break;
+						}
+					?>
+					<td><span style="color:<?php echo $sta?>">{$vo.status_text}</span></td>
+					<td><a href="{:U('Article/edit?cate_id='.$vo['category_id'].'&id='.$vo['id'])}">编辑</a>
+						<a href="{:U('Article/setStatus?ids='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="J_ajax_get">{$vo.status|show_status_op}</a>
+						<a href="{:U('Article/setStatus?status=-1&ids='.$vo['id'])}" class="confirm J_ajax_get">删除</a>
+		                </td>
+				</tr>
+				</volist>
+			</tbody>
+		    </table> 
+		</div>
+		<div class="btn_wrap">
+			<div class="btn_wrap_pd">
+				<a class="btn btn_small J_ajax_get" href="{:U('Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+
+				<label class="checkbox" data-hasqtip="41" oldtitle="编辑和保存栏目分类" title="" aria-describedby="qtip-41">
+		        <button class="btn J_ajax_post" target-form="ids" url="{:U("Article/setStatus",array("status"=>1))}">审核</button>
+				<button class="btn J_ajax_post" target-form="ids" url="{:U("Article/setStatus",array("status"=>0))}">取消审核</button>
+				<button class="btn J_ajax_post confirm" target-form="ids" url="{:U("Article/setStatus",array("status"=>-1))}">删 除</button>
+				<button class="btn J_ajax_post" target-form="ids" url="{:U("Article/move")}">批量移动</button>
+		    </div>
+		</div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$_page}
+	    </div>
+	</div>
+</div>
+
+</block>
+<block name="script">
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+$(function(){
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url');
+		var status = $("#sch-sort-txt").val();
+        var query  = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+        query = query.replace(/^&/g,'');
+		if(status != ''){
+			query += 'status=' + status + "&" + query;
+        }
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
+            url += '?' + query;
+        }
+		window.location.href = url;
+	});
+
+	/* 状态搜索子菜单 */
+	$(".search-form").find(".drop-down").hover(function(){
+		$("#sub-sch-menu").removeClass("hidden");
+	},function(){
+		$("#sub-sch-menu").addClass("hidden");
+	});
+	$("#sub-sch-menu li").find("a").each(function(){
+		$(this).click(function(){
+			var text = $(this).text();
+			$("#sch-sort-txt").text(text).attr("data",$(this).attr("value"));
+			$("#sub-sch-menu").addClass("hidden");
+		})
+	});
+
+    //回车自动提交
+    $('.search-form').find('input').keyup(function(event){
+        if(event.keyCode===13){
+            $("#search").click();
+        }
+    });
+
+    $('#time-start').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+	    minView:2,
+	    autoclose:true
+    });
+
+    $('#datetimepicker').datetimepicker({
+       format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true,
+        pickerPosition:'bottom-left'
+    })
+    
+})
+</script>
+</block>

@@ -1,0 +1,162 @@
+<extend name="Base:common"/>
+
+<block name="body">
+     <div class="content paddingWidth">
+       <div style="padding-top:20px;padding-bottom:20px;color:#646464;font-size:14px;line-height:1.4;">
+          <div class="row">
+            <div id="help_menu" class="hidden-xs col-xs-3 col-sm-3 col-md-3 col-lg-3" style="max-width:221px;">
+                <div class="list-group help_width" style="background-color:#fff;">
+                    <a href="/help/reg" class="list-group-item help_title_bg" style="margin-bottom:0px;border-bottom:1px solid #ddd;">
+                      个人信息
+                    </a>
+                    <a href="help_center.html" class="list-group-item" style="border:0">用户信息</a>
+                    <a href="{:U('user/address')}" class="list-group-item current" style="border:0">地址管理</a>
+                </div>  
+                
+            </div>
+
+            <div id="help_content" class="panel col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <dl>
+                  <dd><h2>地址管理</h2></dd>
+                  <dd>地址列表</dd>
+                  <dd>
+                    <table border=1>
+                      <form action="{:U('user/addSet')}" method="post" class="addSet-form">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>详细地址</th>
+                          <th>联系人</th>
+                          <th>联系电话</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <volist name="lists" id="vo">
+                            <tr>
+                              <td><input type="radio" name="address" class="j_address" value="{$vo.id}" <if condition="$vo['id'] eq $address">checked=checked</if>/></td>
+                              <td><php>echo $vo['country']. $vo['province'].$vo['city'].$vo['district'].'·'.$vo['address']</php></td>
+                              <td>{:get_user_info($vo['uid'],name)}</td>
+                              <td>{$vo.mobile}</td>
+                              <td>
+                                <a href="{:U('user/deleteAddress',array('id'=>$vo['id']))}" class="J_ajax_get">删除</a>
+                                <a href="{:U('user/address',array('id'=>$vo['id']))}">修改</a>
+                                <a href="{:U('user/addSet',array('id'=>$vo['id']))}" class="J_ajax_get">设为默认</a>
+                              </td>
+                            </tr>
+                        </volist>
+                      </tbody>
+                      </form>
+                    </table>
+                  </dd>
+                  <dd>添加地址</dd>
+                  <dd>
+                    <div id="addressinput" class="panel panel-default" style="">
+
+                      <form action="" method="post" class="address-form">
+                      <div class="panel-heading">收货地址</div>
+                        <div class="panel-body">
+                                  <!-- <div class="form-group">
+                                      <label for="province" class="col-sm-2 control-label">所在地区：</label>
+                                      <div class="col-sm-10">
+                                          <form id="form1" runat="server">
+                                            <div>
+                                             <label>省：</label>
+                                             <select id="Select1" name="">
+                                                <option vlalue='陕西省'>陕西省</option>
+                                             </select>
+                                             <label>市：</label>
+                                             <select id="Select2">
+                                                <option value="西安市">西安市</option>
+                                             </select>
+                                             <label>区：</label>
+                                             <select id="Select3">
+                                                <option value="高新区">高新区</option>
+                                                <option value="新城区">新城区</option>
+                                                <option value="未央区">未央区</option>
+                                             </select>
+                                            </div>
+                                          </form>
+                                      </div>
+                                  </div> -->
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">邮箱</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="email" value="{$address.email|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">家庭电话：</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="tel" value="{$address.tel|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">国家：</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="country" value="{$address.country|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">省份</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="province" value="{$address.province|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">县市</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="city" value="{$address.city|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">行政区</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="district" value="{$address.district|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="street" class="col-sm-2 control-label">详细地址</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="street" maxlength="60" size="60" name="address" value="{$address.address|default=''}" placeholder="请填写街道地址，最少5个字" style="width: 500px;"> (注：本网目前只配送西安地区。)
+                                      </div>
+                                  </div>
+                                  
+
+                                  <div class="form-group">
+                                      <label for="postcode" class="col-sm-2 control-label">邮政编码：</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="postcode" maxlength="20" size="20" name="zipcode" value="{$address.zipcode|default=''}" style="width: 150px;">
+                                        <span><a href="http://opendata.baidu.com/post/s" target="_blank">邮编查询</a></span>
+                                      </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label for="name" class="col-sm-2 control-label">收货人姓名：</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name" maxlength="20" size="20" name="name" value="{:get_user_info($address['uid'],'name')}" style="width: 150px;">
+                                    </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label for="phone" class="col-sm-2 control-label">收货人电话：</label>
+                                      <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="phone" maxlength="20" size="20" name="mobile" value="{$address.mobile|default=''}" style="width: 150px;">
+                                      </div>
+                                  </div>
+
+                                <div class="text-center pb20 text-center">
+                                  <a id="add_address" href="{:U('user/address')}" target-form='address-form' type="button" class="btn btn-lg btn-success btn-sm J_ajax_post">保&nbsp;存</a>&nbsp;&nbsp;
+                                </div>
+                                </div>
+                              </div>
+                                    
+                          </form>
+                        </dd>
+                      </dl>
+                  </div>
+                </div>  
+            </div>
+   </div>
+</block>
+

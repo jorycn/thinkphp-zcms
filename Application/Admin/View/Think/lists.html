@@ -1,0 +1,91 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="g-wrap">
+        <!-- 按钮工具栏 -->
+        <div class="u-tab">
+            <ul class="cc">
+              <li class="current">[{$model['title']}] 列表</li>
+            </ul>
+        </div>
+        <div class="h_a">搜索</div>
+        
+        <div class="search_type cc mb10 search-form">
+          <div class="mb10">
+            &nbsp;&nbsp;时间：
+            <input type="text" name="time-start" id="time-start" class="input length_2" value="{:I('time-start')}" style="width:80px;" autocomplete="off" placeholder="起始时间">-<span class="input-append date" id="datetimepicker"><input type="text" id="time-end" name="time-end" class="input input" value="{:I('time-end')}" placeholder="结束时间" /><span class="add-on" style="background:none;border:none;"><i class="icon-th"></i></span></span>
+            <input type="text" name="{$model['search_key']|default='title'}" class="input search-input" value="{:I('title')}" placeholder="请输入关键字">
+            <a class="sch-btn u-btn" href="javascript:;" id="search" url="{:U('Think/lists','model='.$model['name'],false)}">搜索</a>
+            </span>
+          </div>
+        </div>
+        <!-- 数据表格 -->
+        <div class="table_list">
+            <table class="" width="100%">
+                <!-- 表头 -->
+                <thead>
+                    <tr>
+                        <th class="row-selected row-selected">
+                            <input class="check-all" type="checkbox">
+                        </th>
+                        <volist name="list_grids" id="field">
+                            <th>{$field.title}</th>
+                        </volist>
+                    </tr>
+                </thead>
+                <!-- 列表 -->
+                <tbody>
+                    <volist name="list_data" id="data">
+                        <tr>
+                            <td><input class="ids" type="checkbox" value="{$data['id']}" name="ids[]"></td>
+                            <volist name="list_grids" id="grid">
+                                <td>{:get_list_field($data,$grid,$model)}</td>
+                            </volist>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table> 
+        </div>
+        <div class="btn_wrap">
+            <div class="btn_wrap_pd">
+                <input type="checkbox" class="check-all">全选
+                <a class="btn" href="{:U('add?model='.$model['id'])}">新 增</a>
+                <button class="btn J_ajax_post confirm" target-form="ids" url="{:U('del?model='.$model['id'])}">删 除</button>
+            </div>
+        </div>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page|default=''}
+        </div>
+    </div>
+</div>
+
+</block>
+
+<block name="script">
+<script type="text/javascript">
+$(function(){
+    //搜索功能
+    $("#search").click(function(){
+        var url = $(this).attr('url');
+        var query  = $('.search-form').find('input').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+        query = query.replace(/^&/g,'');
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+
+    //回车自动提交
+    $('.search-form').find('input').keyup(function(event){
+        if(event.keyCode===13){
+            $("#search").click();
+        }
+    });
+
+})
+</script>
+</block>

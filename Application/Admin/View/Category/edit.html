@@ -1,0 +1,294 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+		<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+		<div class="g-wrap tab-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+              	<li data-tab="tab1" class="current"><a href="javascript:void(0);">基本设置</a></li>
+              	<li data-tab="tab2"><a href="javascript:void(0);">SEO设置</a></li>
+              	<li data-tab="tab3"><a href="javascript:void(0);">模板设置</a></li>
+              	<li data-tab="tab4"><a href="javascript:void(0);">栏目内容</a></li>
+            </ul>
+        </div>
+        <div class="common-form tab-content">
+		    <form action="{:U()}" method="post" class="form-horizontal">
+		    	<div id="tab1" class="tab-pane in tab1 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">上级分类:</label></td>
+			              <td>
+			              	<select class="select_2 select" name="pid">
+					          	<option value='0' >一级分类</option>
+					          	{$catetree}
+					        </select>
+			              </td>
+			            </tr>
+			            <tr>
+			              <td width="20%">分类名称:</td>
+			              <td><input type="text" name="title" class="input input-large" value="{$info.title|default=''}"><span class="check-tips">名称不能为空</span></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">分类标识:</td>
+			              <td><input type="text" name="name" class="input input-large" value="{$info.name|default=''}"><span class="check-tips">英文字母</span></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">发布内容</td>
+			              <td>
+			              	<label class="inline radio"><input type="radio" name="allow_publish" value="0" <if condition='$info["allow_publish"] eq 0'>checked="checked"</if>>不允许</label>
+							<label class="inline radio"><input type="radio" name="allow_publish" value="1" <if condition='$info["allow_publish"] eq 1'>checked="checked"</if> <empty name='info.allow_publish'>checked="checked"</empty>>仅允许后台</label>
+							<label class="inline radio"><input type="radio" name="allow_publish" value="2" <if condition='$info["allow_publish"] eq 2'>checked="checked"</if>>允许前后台</label>
+						  </td>
+			            </tr>
+			            <tr>
+			              <td width="20%">是否审核</td>
+			              <td><label class="inline radio"><input type="radio" name="check" value="0" <if condition='$info["check"] eq 0'>checked="checked"</if><empty name='info.check'>checked="checked"</empty>>不需要</label>
+							<label class="inline radio"><input type="radio" name="check" value="1" <if condition='$info["check"] eq 1'>checked="checked"</if>>需要</label></td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">栏目属性</label></td>
+			              	<td>
+			              		<empty name='info.type'>
+				              		<volist name=":C('DOCUMENT_MODEL_TYPE')" id="type">
+										<input type="radio" name="type" value="{$key}" class="j_model" <if condition="$key eq 1">checked="checked"</if>>{$type}&nbsp;
+									</volist>
+								<else/>
+									<volist name=":C('DOCUMENT_MODEL_TYPE')" id="type">
+										<input type="radio" name="type" value="{$key}" class="j_model" <if condition='$info["type"] eq $key'>checked="checked"</if>>{$type}&nbsp;
+									</volist>
+								</empty>
+							</td>
+			            </tr>
+			            <tr class="j-link-input dn">
+			              	<td width="20%">Url:</td>
+			              	<td class="j-link dn">
+								<input type="text" class="input input-large" id="j-url" name="url" value="{$info.url|default=''}"><span class="must_red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;
+								<span>填写message/index，则实际处理为：U('message/index');或：http://www.baidu.com</span>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">内容模型</label></td>
+			              	<td>
+			              		<empty name='info.model'>
+			              			<volist name=":get_document_model()" id="list">
+			              				<?php $pmodel = get_parent_model($_GET['pid']);?>
+			              				<?php if($pmodel>0):?>
+											<input type="radio" name="model" value="{$list.id}" <if condition="$list['id'] eq $pmodel">checked="checked"</if>>{$list.title}
+										<?php else:?>
+											<input type="radio" name="model" value="{$list.id}" <if condition="$list['id'] eq 2">checked="checked"</if>>{$list.title}
+										<?php endif;?>
+									</volist>
+								<else />
+									<volist name=":get_document_model()" id="list">
+										<input type="radio" name="model" value="{$list.id}" <if condition='$info["model"] eq $list["id"]'>checked="checked"</if>>{$list.title}
+									</volist>
+								</empty>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">可见性</label></td>
+			              	<td>
+			              		<select name="display">
+									<option value="1">所有人可见</option>
+									<option value="0">不可见</option>
+									<option value="2">管理员可见</option>
+								</select>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">回复</label></td>
+			              	<td>
+			              		<label class="inline radio"><input type="radio" name="reply" value="1" checked>允许</label>
+								<label class="inline radio"><input type="radio" name="reply" value="0">不允许</label>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">排序</label></td>
+			              	<td>
+			              		<input type="text" name="sort" class="input input-small" value="{$info.sort|default=0}">
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">每页显示数</label></td>
+			              	<td>
+			              		<input type="text" name="list_row" class="input input-small" value="{$info.list_row|default=10}">
+							</td>
+			            </tr>
+			            <tr>
+			              <td width="20%"><label class="item-label">分类图标</label></td>
+			              <td>
+				              	<input type="file" id="upload_picture">
+								<input type="hidden" name="icon" id="icon" value="{$info['icon']|default=''}"/>
+								<div class="upload-img-box">
+								<notempty name="info.icon">
+									<div class="upload-pre-item"><img src="__ROOT__{$info.icon|get_cover='path'}"/><a title="删除" href="javascript:;" class="j_delpic"><i class="fa fa-times-circle u-close"></i></a></div>
+								</notempty>
+								</div>
+								<script type="text/javascript">
+								//上传图片
+							    /* 初始化上传插件 */
+								$("#upload_picture").uploadify({
+							        "height"          : 30,
+							        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+							        "fileObjName"     : "download",
+							        "buttonText"      : "上传图片",
+							        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+							        "width"           : 120,
+							        'removeTimeout'	  : 1,
+							        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+							        "onUploadSuccess" : uploadPicture,
+							        'onFallback' : function() {
+							            alert('未检测到兼容版本的Flash.');
+							        }
+							    });
+							    function delpic(){
+							    	$("#icon").attr("value",0);
+							    	$("#icon").parent().find('.upload-img-box').html('');
+							    }
+								function uploadPicture(file, data){
+							    	//var data = $.parseJSON(data);
+							    	var data = window["eval"]("(" + data + ")"); 
+							    	var src = '';
+							        if(data.status){
+							        	$("#icon").val(data.id);
+							        	src = data.url || '__ROOT__' + data.path;
+							        	$("#icon").parent().find('.upload-img-box').html(
+							        		'<div class="upload-pre-item"><img src="' + src + '"/><a title="删除" href="javascript:;" onclick="delpic()"><i class="fa fa-times-circle u-close"></i></a></div>'
+							        	);
+							        } else {
+							        	updateAlert(data.info);
+							        	setTimeout(function(){
+							                $('#top-alert').find('button').click();
+							                $(that).removeClass('disabled').prop('disabled',false);
+							            },1500);
+							        }
+							    }
+								</script>
+						  </td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div id="tab2" class="tab-pane tab2 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">网页标题:</label></td>
+			              <td><input type="text" name="meta_title" class="input input-large" value="{$info.meta_title|default=''}"></td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">关键字:</label></td>
+			              <td><textarea name="keywords">{$info.keywords|default=''}</textarea></td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">描述:</label></td>
+			              <td><textarea name="description">{$info.description|default=''}</textarea></td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div id="tab3" class="tab-pane tab3 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">频道模板:</label></td>
+			              <?php $tpl_category = get_template('category');?>
+			              <td>
+			              	<select name="template_index" class="select_6 select">
+				              	<volist name="tpl_category" id="vo">
+				              		<option value="{$key}" <eq name="info.template_index" value="$key">selected=selected</eq>>{$vo}</option>
+				              	</volist>
+			              	</select>
+			              	<span class="check-tips">如：category_XXX.后缀</span>
+			              </td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">列表模板:</label></td>
+			              <td>
+			              	<?php $tpl_list = get_template('list');?>
+			              	<select name="template_lists" class="select_6 select">
+				              	<volist name="tpl_list" id="vo">
+				              		<option value="{$key}" <eq name="info.template_lists" value="$key">selected=selected</eq>>{$vo}</option>
+				              	</volist>
+			              	</select>
+			              	<span class="check-tips">如：list_XXX.后缀</span>
+			              </td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">详情模板:</label></td>
+			              <td>
+			              	<?php $tpl_show = get_template('show');?>
+			              	<select name="template_detail" class="select_6 select">
+				              	<volist name="tpl_show" id="vo">
+				              		<option value="{$key}" <eq name="info.template_detail" value="$key">selected=selected</eq>>{$vo}</option>
+				              	</volist>
+			              	</select>
+			              	<span class="check-tips">如：show_XXX.后缀</span>
+			              </td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div id="tab4" class="tab-pane tab4 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td><textarea name="content">{$info.content}</textarea>
+			                {:hook('adminArticleEdit', array('name'=>content,'value'=>$info['content']))}</td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+						<input type="hidden" name="id" value="{$info.id|default=''}">
+						<input type="hidden" name="pid" value="{:isset($category['id'])?$category['id']:$info['pid']}">
+						<button type="submit" id="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          </div>
+		        </div>
+		    </form>
+    	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		<present name="info.id">
+		Think.setValue("allow_publish", {$info.allow_publish|default=1});
+		Think.setValue("check", {$info.check|default=0});
+		Think.setValue("model[]", {$info.model|json_encode} || [1]);
+		Think.setValue("type[]", {$info.type|json_encode} || [2]);
+		Think.setValue("display", {$info.display|default=1});
+		Think.setValue("reply", {$info.reply|default=0});
+		Think.setValue("reply_model[]", {$info.reply_model|json_encode} || [1]);
+		</present>
+		$(function(){
+			showTab();
+			$("input[name=reply]").change(function(){
+				var $reply = $(".form-item.reply");
+				parseInt(this.value) ? $reply.show() : $reply.hide();
+			}).filter(":checked").change();
+		});
+		//栏目类型设定
+		var $attr = $('.j_model:checked').val();
+		var jurl = $("#j-url").val();
+		if(jurl.length<1){
+			$('.j-link-input').hide();
+		}
+		if($attr > '2'){
+			$('.j-link-input').show();
+			$('.j-link').show();
+		}
+		$('.j_model').change(function(){
+				var $val = $(this).val();
+				if($val>'2'){
+					$('.j-link-input').show();
+					$('.j-link').show();
+				}else{
+					$('.j-link-input').hide();
+				}
+		})
+	</script>
+</block>

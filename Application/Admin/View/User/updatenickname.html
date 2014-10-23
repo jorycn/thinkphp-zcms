@@ -1,0 +1,43 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+		<div class="g-wrap jj">
+        <div class="u-tab">
+            <ul class="cc">
+              	<li class="current"><a href="{:U('updatenickname')}">修改昵称</a></li>
+				<li><a href="{:U('updatepassword')}">修改密码</a></li>
+            </ul>
+        </div>
+		<div class="common-form">
+			<!-- 修改密码表单 -->
+		    <form action="{:U('User/submitNickname')}" method="post" class="form-horizontal" autocomplete="off">
+				<div class="table_list">
+				<table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="12%">密码:</td>
+			              <td width="88%"><input type="password" name="password" class="input input-large"  autocomplete="off"/></td>
+			            </tr>
+			            <tr>
+			              <td>昵称:</td>
+			              <td><input type="text" name="nickname" class="input input-large" autocomplete="off" value="{:get_username()}"/></td>
+			            </tr>
+			        </tbody>
+			    </table>
+				<div class="btn_wrap">
+		          	<div class="btn_wrap_pd">
+		          		<a class="btn btn_small J_ajax_get" href="{:U('Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+		            	<button type="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 认</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          	</div>
+		        </div>
+		    	</div>
+			</form>
+		</div>
+	</div>
+</block>
+
+<block name="script">
+	<script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+</block>

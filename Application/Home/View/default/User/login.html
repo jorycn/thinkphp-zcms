@@ -1,0 +1,70 @@
+<extend name="Base/common"/>
+
+<block name="body">
+     <form class="login-form" action="__SELF__" method="post">
+        <h2 class="loginform-heading">登录</h2>
+
+        <div class="input-group input-group-lg" id="mobile-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+          <input type="text" id="inputEmail" class="form-control" placeholder="请输入用户名"  ajaxurl="/member/checkUserNameUnique.html" errormsg="请填写1-16位用户名" nullmsg="请填写用户名" datatype="*1-16" value="" name="username">
+        </div>
+
+        <div class="input-group input-group-lg" id="password-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+          <input type="password" id="inputPassword"  class="form-control" placeholder="请输入密码"  errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">
+        </div>
+
+        <div class="input-group input-group-lg" id="password-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-refresh"></span></span>
+          <input type="text" id="inputPassword" class="form-control" placeholder="请输入验证码"  errormsg="请填写5位验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+        </div>
+        <p><img class="verifyimg reloadverify" id="verifyimg" alt="点击切换" src="{:U('verify')}" style="cursor:pointer;"></p>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginsubmit" data-loading-text="正在登录...">登录</button>
+        <div class="notice controls Validform_checktip text-warning"></div>
+        <br>
+        <span class="help-inline"><a href="/user/forgot">找回密码</a></span>
+        <span class="help-inline" style="padding-left:20px; display:none;"><a href="login.html"><img width="16" height="16" src="img/qqlogin.png"> QQ登录</a></span>
+        <span class="help-inline" style="float:right"><a href="register.html">注册</a></span>
+      </form>
+</block>
+
+<block name="script">
+  <script type="text/javascript">
+      $(document)
+        .ajaxStart(function(){
+          $("button:submit").addClass("log-in").attr("disabled", true);
+        })
+        .ajaxStop(function(){
+          $("button:submit").removeClass("log-in").attr("disabled", false);
+        });
+
+
+      $("form").submit(function(){
+        var self = $(this);
+        $.post(self.attr("action"), self.serialize(), success, "json");
+        return false;
+
+        function success(data){
+          if(data.status){
+            window.location.href = data.url;
+          } else {
+            self.find(".Validform_checktip").text(data.info);
+            //刷新验证码
+            $("#verifyimg").click();
+          }
+        }
+      });
+
+    $(function(){
+      var verifyimg = $("#verifyimg").attr("src");
+            $("#verifyimg").click(function(){
+                if( verifyimg.indexOf('?')>0){
+                    $("#verifyimg").attr("src", verifyimg+'&random='+Math.random());
+                }else{
+                    $("#verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+                }
+            });
+    });
+  </script>
+</block>

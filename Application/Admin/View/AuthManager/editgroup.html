@@ -1,0 +1,38 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="g-wrap">
+        <!-- 按钮工具栏 -->
+        <div class="u-tab">
+            <ul class="cc">
+                <li class="current"><a href="javascript:;"><h2>{$auth_group['id']?'编辑':'新增'}用户组</h2></a></li>
+            </ul>
+        </div>
+        <!-- 数据表格 -->
+        <div class="table_list">
+            <form action="{:U('AuthManager/writeGroup')}" enctype="application/x-www-form-urlencoded" method="POST" class="form-horizontal">
+                <div class="form-item">
+                    <label for="auth-title" class="item-label">用户组</label>
+                    <div class="controls">
+                        <input id="auth-title" type="text" name="title" class="input input-large" value="{$auth_group.title}"/>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <label for="auth-description" class="item-label">描述</label>
+                    <div class="controls">
+                        <label class="inputarea input-large"><textarea id="auth-description" type="text" name="description">{$auth_group.description}</textarea></label>
+                    </div>
+                </div>
+
+                 <div class="btn_wrap">
+                  <div class="btn_wrap_pd">
+                    <button type="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button>
+                    <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</block>

@@ -1,0 +1,93 @@
+<extend name="./Application/Admin/View/Public/base.html" />
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc">
+		      <li class="current"><a href="javascript:;">产品列表</a></li>
+		      <!-- <li><a target="_self" href="{:U('ShopProduct/add',array('term'=>$term['term_id']))}">添加产品</a></li> -->
+		    </ul>
+		</div>
+		
+	    <div class="search_type cc mb10 search-form">
+	      <div class="mb10">
+	        <span class="mr20">分类：
+	        <select class="select_2 select" name="term">
+	          	<option value='0' >全部</option>
+	          	{$taxonomys}
+	        </select>
+	        <span class="mr20">状态：
+        	<php>
+        		$all = ($status)?'selected':'';
+        		$first = ($status==1)?'selected':'';
+        		$second = ($status==2)?'selected':'';
+        	</php>
+	        <select class="select_2 select" id="sch-sort-txt" name="term">
+	          	<option value="" {$all}>全部</option>
+	          	<option value="1" {$first}>已审核</option>
+	          	<option value="2" {$second}>待审核</option>
+	        </select>
+	        &nbsp;&nbsp;时间：
+	        <input type="text" name="time-start" id="time-start" class="input length_2" value="{:I('time-start')}" style="width:80px;" autocomplete="off" placeholder="起始时间">-<span class="input-append date" id="datetimepicker"><input type="text" id="time-end" name="time-end" class="input input" value="{:I('time-end')}" placeholder="结束时间" /><span class="add-on" style="background:none;border:none;"><i class="icon-th"></i></span></span>
+	        &nbsp; &nbsp;标题：
+	        <input type="text" class="input length_2" name="title" style="width:200px;" value="{:I('title')}" placeholder="请输入标题文档">
+	        <a class="u-btn" href="javascript:;" id="search" url="{:U('article/mydocument','pid='.I('pid',0).'&cate_id='.$cate_id,false)}">搜索</a>
+	        <!-- <a href="javascript:;" class="u-btn" onclick="{:U('post/index',array('resetFiter'=>true))}">重置</a> -->
+	        </span>
+	      </div>
+	    </div>
+		<!-- 数据表格 -->
+	    <div class="table_list u-table">
+			<table class="" width="100%">
+		    <thead>
+		        <tr>
+				<th width="5%"><input class="check-all" type="checkbox"/></th>
+				<th width="5%">编号</th>
+				<th width="25%">标题</th>
+				<th width="12%">预览图</th>
+				<th width="12%">分类</th>
+				<th width="12%">最后更新</th>
+				<th width="5%">浏览</th>
+				<th width="5%">状态</th>
+				<th width="10%">操作</th>
+				</tr>
+		    </thead>
+		    <tbody>
+				<volist name="list" id="vo">
+				<tr>
+		            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+					<td>{$vo.id} </td>
+					<td><a href="{:U('ShopProduct/index?cate_id='.$vo['category_id'].'&pid='.$vo['id'])}">{$vo.title}</a></td>
+					<td><img src="{$vo.thumb|get_product_image}" width="75" height="75"/></td>
+					<td><span>{:get_shopcategory_name($vo['cid'])}</span></td>
+					<td><span>{$vo.update_time|time_format}</span></td>
+					<td>{$vo.view}</td>
+					<td>{$vo.status|show_status_op}</td>
+					<php>$anum = abs(1-$vo['status']);</php>
+					<td><a href="{:U('ShopProduct/edit?cate_id='.$vo['category_id'].'&id='.$vo['id'])}">编辑</a>
+						<a href="{:U('ShopProduct/setStatus?ids='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="J_ajax_get">{$anum|show_status_op}</a>
+						<a href="{:U('ShopProduct/setStatus?status=-1&ids='.$vo['id'])}" class="confirm J_ajax_get">删除</a>
+		                </td>
+				</tr>
+				</volist>
+			</tbody>
+		    </table> 
+		</div>
+		<div class="btn_wrap">
+            <div class="btn_wrap_pd">
+            <a class="btn btn_small J_ajax_get" href="{:U('Admin/Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+            <button class="btn J_ajax_post" target-form="ids" url="{:U("ShopProduct/setStatus",array("status"=>1))}">审核</button>
+			<button class="btn J_ajax_post" target-form="ids" url="{:U("ShopProduct/setStatus",array("status"=>0))}">取消审核</button>
+			<button class="btn J_ajax_post confirm" target-form="ids" url="{:U("ShopProduct/setStatus",array("status"=>-1))}">删 除</button>
+			<button class="btn" type="button" id="J_Content_remove">批量移动</button>
+            </div>
+        </div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$_page}
+	    </div>
+	</div>
+</div>
+
+</block>

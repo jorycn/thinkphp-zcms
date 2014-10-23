@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8" />
+    <title>系统后台</title>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+    <meta name="robots" content="noindex,nofollow">
+    <link href="{:C('ADMIN_CSS')}/reset.css" rel="stylesheet">
+	<link rel="stylesheet" href="{:C('ADMIN_CSS')}/reset.css">
+	<link rel="stylesheet" href="{:C('ADMIN_CSS')}/style.css">
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
+	<![endif]--><!--[if gte IE 9]><!-->
+	<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js"></script>
+</head>
+
+<body>
+	<div class="g-wrap">
+	    <div class="search_type cc mb10 search-form">
+	      <div class="mb10">
+	        <span class="mr20">分类：
+	        <select class="select_2 select" name="cate_id">
+	          	<option value='0' >全部</option>
+	          	{$category}
+	        </select>
+	        <span class="mr20">状态：
+        	<php>
+        		$all = ($status)?'selected':'';
+        		$first = ($status==1)?'selected':'';
+        		$second = ($status==2)?'selected':'';
+        	</php>
+	        <select class="select_2 select" id="sch-sort-txt" name="term">
+	          	<option value="" {$all}>全部</option>
+	          	<option value="1" {$first}>已审核</option>
+	          	<option value="2" {$second}>待审核</option>
+	        </select>
+	        &nbsp;&nbsp;时间：
+	        <input type="text" name="time-start" id="time-start" class="input length_2" value="{:I('time-start')}" style="width:80px;" autocomplete="off" placeholder="起始时间">-<span class="input-append date" id="datetimepicker"><input type="text" id="time-end" name="time-end" class="input input" value="{:I('time-end')}" placeholder="结束时间" /><span class="add-on" style="background:none;border:none;"><i class="icon-th"></i></span></span>
+	        &nbsp; &nbsp;标题：
+	        <input type="text" class="input length_2" name="title" style="width:200px;" value="{:I('title')}" placeholder="请输入标题文档">
+	        <a class="u-btn" href="javascript:;" id="search" url="{:U('article/mydocument')}">搜索</a>
+	        <!-- <a href="javascript:;" class="u-btn" onclick="{:U('post/index',array('resetFiter'=>true))}">重置</a> -->
+	        </span>
+	      </div>
+	    </div>
+		<!-- 数据表格 -->
+	    <div class="table_list">
+			<table class="" width="100%">
+		    <thead>
+		        <tr>
+				<th width="5%"><input class="check-all" type="checkbox"/></th>
+				<th width="5%">编号</th>
+				<th width="25%">标题</th>
+				<th width="12%">分类</th>
+				<th width="5%">浏览</th>
+				<th width="5%">状态</th>
+				<th width="12%">最后更新</th>
+				</tr>
+		    </thead>
+		    <tbody>
+				<volist name="list" id="vo">
+				<tr>
+		            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+					<td>{$vo.id} </td>
+					<td><a href="{:U('Article/index?cate_id='.$vo['category_id'].'&pid='.$vo['id'])}">{$vo.title}</a></td>
+					<td><span>{:get_cate($vo['category_id'])}</span></td>
+					<td>{$vo.view}</td>
+					<?php 
+						switch ($vo['status']) {
+							case '0':
+								$sta = 'red'; //禁用
+								break;
+							case '1':
+								$sta = 'green'; //正常
+								break;
+							default:
+								$sta = '#333';
+								break;
+						}
+					?>
+					<td><span style="color:<?php echo $sta?>">{$vo.status_text}</span></td>
+					<td><span>{$vo.update_time|time_format}</span></td>
+				</tr>
+				</volist>
+			</tbody>
+		    </table> 
+		</div>
+		<div class="btn_wrap">
+			<div class="btn_wrap_pd">
+		        <button class="btn j_show">确认</button>
+		        <button class="btn j_colse">取消</button>
+		    </div>
+		</div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$_page}
+	    </div>
+	</div>
+
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+$(function(){
+	$('.j_show').click(function(){
+		var ids=$('input.ids:checked');
+		var str='';
+		ids.each(function(){
+			str = $(this).val() + "," + str;
+		})
+		if (str.length > 0) {
+        	str = str.substr(0,str.length - 1);
+    	}
+		window.parent.document.getElementById("j_array").value=str;
+		window.parent.document.getElementById("popWinClose").click();
+	})
+	$('.j_colse').click(function(){
+		window.parent.document.getElementById("popWinClose").click(); 
+	})
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url');
+		var status = $("#sch-sort-txt").val();
+        var query  = $('.search-form').find('input,select').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+        query = query.replace(/^&/g,'');
+		if(status != ''){
+			query += 'status=' + status + "&" + query;
+        }
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
+            url += '?' + query;
+        }
+		window.location.href = url;
+	});
+
+	/* 状态搜索子菜单 */
+	$(".search-form").find(".drop-down").hover(function(){
+		$("#sub-sch-menu").removeClass("hidden");
+	},function(){
+		$("#sub-sch-menu").addClass("hidden");
+	});
+	$("#sub-sch-menu li").find("a").each(function(){
+		$(this).click(function(){
+			var text = $(this).text();
+			$("#sch-sort-txt").text(text).attr("data",$(this).attr("value"));
+			$("#sub-sch-menu").addClass("hidden");
+		})
+	});
+
+    $('#time-start').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+	    minView:2,
+	    autoclose:true
+    });
+
+    $('#datetimepicker').datetimepicker({
+       format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true,
+        pickerPosition:'bottom-left'
+    })
+
+    //全选的实现
+	$(".check-all").click(function(){
+		$(".ids").prop("checked", this.checked);
+	});
+	$(".ids").click(function(){
+		var option = $(".ids");
+		option.each(function(i){
+			if(!this.checked){
+				$(".check-all").prop("checked", false);
+				return false;
+			}else{
+				$(".check-all").prop("checked", true);
+			}
+		});
+	});
+    
+})
+</script>
+
+</body>
+</html>

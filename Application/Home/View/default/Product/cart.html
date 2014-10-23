@@ -1,0 +1,61 @@
+<extend name="Base/common"/>
+
+<block name="body">
+  <form class="form-horizontal" id="cartform" method="post" action="">
+      <div class="top-content">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading"><span><b>购物车</b></span></div>
+
+          <!-- Table -->
+          <table class="table">
+            <tbody><tr class="text-center">
+              <td class="text-left">商品</td>
+              <td>规格</td>
+              <td>单价</td>
+              <td>数量</td>
+              <td class="text-left">小计</td>
+              <td>操作</td>
+            </tr>
+          
+            <volist name="lists" id="vo">
+                <tr>
+                  <td class="text-left" style="vertical-align:middle">
+                    <a href="" target="blank">
+                    <img src="{$vo.thumb|get_product_image}" width="80">{$vo.title}</a>
+                  </td>
+                  <td class="text-center" style="vertical-align:middle">
+                    树皮罐装（7袋）
+                  </td>
+                  <td class="text-center goodprice" style="vertical-align:middle">{$vo.price}</td>
+                  <td class="text-center goodtotal" style="vertical-align:middle">
+                    <span class="dec cursor_hand glyphicon glyphicon-minus"></span>
+                    <input class="qty form-control" name="qty" value="{$vo.qty}" autocomplete="off">
+                    <span class="inc cursor_hand glyphicon glyphicon-plus" specmax="43" specstocks="39"></span>
+                  </td>
+                  <td width="100" class="goodpricetotal" style="vertical-align:middle">{$vo.subTotal}</td>
+                  <td class="text-center" style="vertical-align:middle">
+                    <a href="{:U('product/delete',array('id'=>$vo[id]))}" class="delgood btn btn-danger btn-sm J_ajax_get">删除</a>
+                  </td>
+                </tr> 
+            </volist>
+                <tfoot>
+                  <tr>
+                    <td colspan="5" align=right>
+                      总计:
+                    </td> 
+                    <td>{$globalTotals}</td>
+                  </tr>
+                </tfoot>
+
+          </tbody></table>
+        </div>
+        <div class="text-right">
+                  <span style="display:block;padding:20px 0px 10px 0px; color:red; float:left;">全场满150元免运费</span>
+          <span><a id="submit" href="{:U('orders/makeorder')}" type="submit" class="btn  btn-primary btn-lg" data-loading-text="进入结算中心...">结算</a></span>
+          <span><button id="cancel" type="button" class="btn  btn-default btn-lg">返回</button></span>
+        </div>
+      </div>
+  </form>
+</block>
+   

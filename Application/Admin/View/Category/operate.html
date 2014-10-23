@@ -1,0 +1,39 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+
+		<div class="g-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+              	<li class="current"><a href="javascript:void(0);">{$operate}分类</a></li>
+            </ul>
+        </div>
+        <div class="common-form">
+		    <form action="{:U($type)}" method="post" class="form-horizontal">
+			    <div id="tab2" class="tab-pane tab2 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">目标分类<span class="check-tips">将{$operate}至的分类</span></label></td>
+			              <td>
+			              		<select name="to">
+									<volist name="list" id="vo">
+										<option value="{$vo.id}">{$vo.title}</option>
+									</volist>
+								</select>
+			              </td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+						<input type="hidden" name="from" value="{$from}">
+						<button type="submit" id="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          </div>
+		        </div>
+		    </form>
+    	</div>
+</block>

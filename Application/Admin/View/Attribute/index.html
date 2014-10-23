@@ -1,0 +1,58 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="g-wrap">
+        <!-- 按钮工具栏 -->
+        <div class="u-tab">
+            <ul class="cc">
+              <li class="current"><a href="javascript:;">[{:get_model_by_id($model_id)}] 属性列表(不含继承属性)</a></li>
+            </ul>
+        </div>
+
+        <!-- 数据表格 -->
+        <div class="table_list">
+            <table class="" width="100%">
+            <thead>
+                <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">编号</th>
+                <th class="">字段</th>
+                <th class="">名称</th>
+                <th class="">数据类型</th>
+                <th class="">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <notempty name="_list">
+                <volist name="_list" id="vo">
+                <tr>
+                    <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
+                    <td>{$vo.id} </td>
+                    <td>{$vo.name}</td>
+                    <td><a data-id="{$vo.id}" href="{:U('Attribute/edit?id='.$vo['id'])}">{$vo.title}</a></td>
+                    <td><span>{:get_attribute_type($vo['type'])}</span></td>
+                    <td><a href="{:U('Attribute/edit?id='.$vo['id'])}">编辑</a>
+                        <a class="confirm J_ajax_get" href="{:U('Attribute/remove?id='.$vo['id'])}">删除</a>
+                        </td>
+                </tr>
+                </volist>
+                <else/>
+                <td colspan="6" class="input-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+            </tbody>
+            </table> 
+        </div>
+        <div class="btn_wrap">
+            <div class="btn_wrap_pd">
+                <a class="btn btn_submit" href="{:U('Attribute/add?model_id='.$model_id)}">新 增</a>
+            </div>
+        </div>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</div>
+
+</block>
+

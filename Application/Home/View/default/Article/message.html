@@ -1,0 +1,132 @@
+<extend name="Base/2columns-left"/>
+
+<block name="leftbar">
+	<ul>
+		<li><a href="javascript:;">在线留言</a></li> 
+	</ul>
+</block>
+
+<block name="body">
+	<form action="{:U('message/add')}" method="POST" id="formBox" onsubmit="return check();">
+              <table>
+                <tbody>
+                      <tr>
+                        <td>姓名：</td>
+                        <td>
+                          <input name="name" type="text" value="您的姓名" style=" margin-left:0px;" id="name" class="form_ri"/>
+                        </td>
+                      </tr>
+                       <tr>
+                          <td>联系方式：</td>
+                        <td>
+                           <input name="call" id="phone" type="text" value="您的手机号码" class="form_ri"/>
+                        </td>
+                       </tr>
+                       <tr>
+                          <td>您的Email：</td>
+                        <td>
+                           <input type="text" name="email" id="email" autocomplete="off" value="您的邮箱" class="form_ri"/>
+                        </td>
+                       </tr>
+                       <tr>
+                          <td>标题：</td>
+                        <td>
+                           <input type="text" name="title" id="title" autocomplete="off" value="留言标题" class="form_ri"/>
+                        </td>
+                       </tr>
+                       <tr>
+                         <td valign="top">反馈内容:</td>
+                         <td>
+                            <textarea cols="" rows="" name="content" style=" width:500px; height:250px; vertical-align:top; rows="10"" class="form_ri">输入您的留言内容</textarea>
+                         </td>
+                       </tr>
+                       <tr>
+                          <td></td>
+                        <td>
+                           <input type="submit" value="提交" style=" margin:20px 30px 0 0; padding:5px 10px; ">
+                           <input type="reset" style=" margin:20px 30px 0 0; padding:5px 10px;" id="reset" value="重置">
+                        </td>
+                       </tr>
+                </tbody>  
+              </table>
+    </form>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+    function check(){
+      $call = $("#formBox").find("input[name='call']");
+      $name = $("#formBox").find("input[name='name']");
+      $email = $("#formBox").find("input[name='email']");
+      $content = $("#formBox").find("textarea[name='content']");
+      if ($name.val() == "您的姓名"  || $name.val() == ""){
+        alert("请填写您的姓名！");
+        $name.val("");
+        $name.focus();
+        return false;
+      }
+      if ($call.val() == "您的手机号码" || $call.val() == ""){
+        alert("请填写您的手机号码！");
+        $call.val("");
+        $call.focus();
+        return false;
+      }else{
+        var myreg =/^0{0,1}(13[0-9]|15[0-9]|153|156|18[7-9])[0-9]{8}$/;
+        if(!myreg.test($call.val())){
+          alert("请输入有效的联系方式!");
+          $call.val("");
+          $call.focus();
+          return false;
+        }
+      }
+      if ($content.val() == "输入您的留言内容" || $content.val() == ""){
+        alert("请填写留言内容！");
+        $content.val("");
+        $content.focus();
+        return false;
+      } 
+      if ($email.val() == "您的邮箱"  || $email.val() == ""){
+        alert("请填写您的电子邮件！");
+        $email.val("");
+        $email.focus();
+        return false;
+      }else{
+        var myreg =/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(!myreg.test($email.val())){
+          alert('请填写有效的电子邮件！!');
+          $email.value="";
+          $email.focus();
+          return false;
+        }
+      }
+    }
+    </script>
+    <script type="text/javascript">
+     //输入框获取和失去焦点时内容变化
+     $(function(){
+      var $msgInput = $('#formBox').find('input[type=text],textarea');
+      var array = [];
+      for(var i=0;i<$msgInput.length;i++)
+      {
+        array[i] = $msgInput[i].value;
+      }
+      $msgInput.focus(function(){
+        var index = $msgInput.index($(this));
+        $(this).css('color','#000');
+        if($(this).val() == array[index]) $(this).val('');
+
+      }).blur(function(){
+        var index = $msgInput.index($(this));
+        if(this.value == ''){
+          $(this).val(array[index]);
+          $(this).css('color','#7A7A7A');
+        }
+        /*else{ 
+          checkPhone();
+        }
+        */
+      });
+        
+     });
+    </script>
+</block>

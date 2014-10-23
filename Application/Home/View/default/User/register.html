@@ -1,0 +1,79 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <form class="createform" action="__SELF__" method="post">
+
+        
+        <h2 class="createform-heading">注册用户</h2>
+        
+        <div class="input-group input-group-lg" id="mobile-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+          <input type="text" name="username" class="form-control" placeholder="请输入用户名"  ajaxurl="/member/checkUserNameUnique.html" errormsg="请填写1-16位用户名" nullmsg="请填写用户名" datatype="*1-16">
+        </div>
+        <div class="input-group input-group-lg" id="mobile-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+          <input type="text" name="email" id="inputEmail" class="form-control" placeholder="请输入电子邮件"  ajaxurl="/member/checkUserEmailUnique.html" errormsg="请填写正确格式的邮箱" nullmsg="请填写邮箱" datatype="e">
+        </div>
+        <div class="input-group input-group-lg" id="mobile-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+          <input type="password" id="inputPassword"  class="form-control" placeholder="请输入密码"  errormsg="密码为6-20位" nullmsg="请填写密码" datatype="*6-20" name="password">
+        </div>
+        <div class="input-group input-group-lg" id="mobile-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+          <input type="password" id="inputPassword" class="form-control" placeholder="请再次输入密码" recheck="password" errormsg="您两次输入的密码不一致" nullmsg="请填确认密码" datatype="*" name="repassword">
+        </div>
+        <div class="input-group input-group-lg" id="mobile-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-refresh"></span></span>
+          <input type="text" id="inputPassword" class="form-control" placeholder="请输入验证码"  errormsg="请填写5位验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+        </div>
+        <p><img class="verifyimg reloadverify" id="verifyimg" alt="点击切换" src="{:U('verify')}" style="cursor:pointer;"></p>
+
+        <div class="notice" style="none"></div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="createcodesubmit" data-loading-text="正在发送...">申请注册</button>
+        <div class="controls Validform_checktip text-warning"></div>
+        
+        <p style="margin-top:10px;">
+          <span style="float:left;"><input type="checkbox" name="agreement" checked=""> 同意 <a href="/help/agreement" target="_blank"> "服务条款" </a></span> <span style="float:right;padding-top:4px;"><a href="login.html">直接登录</a></span>
+        </p>
+    </form>
+</block>
+
+<block name="script">
+  <script type="text/javascript">
+      $(document)
+        .ajaxStart(function(){
+          $("button:submit").addClass("log-in").attr("disabled", true);
+        })
+        .ajaxStop(function(){
+          $("button:submit").removeClass("log-in").attr("disabled", false);
+        });
+
+
+      $("form").submit(function(){
+        var self = $(this);
+        $.post(self.attr("action"), self.serialize(), success, "json");
+        return false;
+
+        function success(data){
+          if(data.status){
+            window.location.href = data.url;
+          } else {
+            self.find(".Validform_checktip").text(data.info);
+            //刷新验证码
+            $("#verifyimg").click();
+          }
+        }
+      });
+
+    $(function(){
+      var verifyimg = $("#verifyimg").attr("src");
+            $("#verifyimg").click(function(){
+                if( verifyimg.indexOf('?')>0){
+                    $("#verifyimg").attr("src", verifyimg+'&random='+Math.random());
+                }else{
+                    $("#verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+                }
+            });
+    });
+  </script>
+</block>

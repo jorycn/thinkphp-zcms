@@ -1,0 +1,17 @@
+<extend name="Base/common" />
+
+<block name="body">
+    <div class="paddingWidth">  
+      <div> 
+        <ul style="margin:0 10px;">
+            <volist name="list" id="vo">
+              <li class="">
+                  <a href="{:U('Article/show',array('id'=>$vo['id']))}">{$vo.title}</a>
+              </li>
+            </volist>
+           <div class="clear"></div>
+        </ul>
+      </div>
+    </div>
+</block>
+   

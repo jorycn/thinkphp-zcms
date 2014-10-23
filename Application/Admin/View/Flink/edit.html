@@ -1,0 +1,137 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+		<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+		<div class="g-wrap tab-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+              	<li data-tab="tab1" class="current"><a href="javascript:void(0);">基本设置</a></li>
+            </ul>
+        </div>
+        <div class="common-form tab-content">
+		    <form action="{:U()}" method="post" class="form-horizontal">
+		    	<div id="tab1" class="tab-pane in tab1 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">标题:</label></td>
+			              <td><input type="text" class="input input-large" name="title" value="{$info['title']|default=''}"/></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">类型:</td>
+			              <td>
+			              	<select name="type">
+			              		<php>$flink_type = C('FLINK_TYPE');</php>
+			              		<volist name="flink_type" id="vo">
+			              			<empty name="info.type">
+			              				<option value="{$vo}" <if condition='$vo eq text'>selected=selected</if>>{$vo}</option>
+			              			<else/>
+			              				<option value="{$vo}" <if condition='$vo eq $info["type"]'>selected=selected</if>>{$vo}</option>
+			              			</empty>
+			              		</volist>
+			              	</select>
+			              </td>
+			            </tr>
+			            <notempty name="flink_group">
+				            <tr>
+				            	<td width="20%">分组:</td>
+				                <td>
+				              	<select name="gid">
+				              		<volist name="flink_group" id="vo">
+				              			<empty name="info.gid">
+				              				<option value="{$vo.id}" <if condition='$vo[id] eq 1'>selected=selected</if>>{$vo.title}</option>
+				              			<else/>
+				              				<option value="{$vo.id}" <if condition='$info[gid] eq $vo[id]'>selected=selected</if>>{$vo.title}</option>
+				              			</empty>
+				              		</volist>
+				              	</select>
+				              	</td>
+				            </tr>
+			        	</notempty>
+			            <tr>
+			              <td width="20%"><label class="item-label">Url:</label></td>
+			              <td><input type="text" class="input input-large" name="url" value="{$info['url']|default=''}" /></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">是否显示</td>
+			              <td>
+			              	<?php if($info['status']!==null):?>
+				              	<label class="inline radio"><input type="radio" name="status" value="1" <if condition='$info["status"] eq 1'>checked="checked"</if>>显示</label>
+								<label class="inline radio"><input type="radio" name="status" value="0" 
+								<?php if($info['status']==0):?>checked="checked"<?php endif;?>>隐藏</label>
+							<?php else:?>
+								<label class="inline radio"><input type="radio" name="status" value="1" checked="checked">显示</label>
+								<label class="inline radio"><input type="radio" name="status" value="0">隐藏</label>
+							<?php endif;?>
+						</td>
+			            </tr>
+			            
+			            <tr>
+			              	<td width="20%"><label class="item-label">排序</label></td>
+			              	<td>
+			              		<input type="text" name="sort" class="input input-small" value="{$info.sort|default=0}">
+							</td>
+			            </tr>
+			            <tr>
+			              <td width="20%"><label class="item-label">分类图标</label></td>
+			              <td>
+				              	<input type="file" id="upload_picture">
+								<input type="hidden" name="logo" id="icon" value="{$info['logo']|default=''}"/>
+								<div class="upload-img-box">
+								<notempty name="info.logo">
+									<div class="upload-pre-item"><img src="__ROOT__{$info.logo|get_cover='path'}"/></div>
+								</notempty>
+								</div>
+								<script type="text/javascript">
+								//上传图片
+							    /* 初始化上传插件 */
+								$("#upload_picture").uploadify({
+							        "height"          : 30,
+							        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+							        "fileObjName"     : "download",
+							        "buttonText"      : "上传图片",
+							        "uploader"        : "{:U('Admin/File/uploadPicture',array('session_id'=>session_id()))}",
+							        "width"           : 120,
+							        'removeTimeout'	  : 1,
+							        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+							        "onUploadSuccess" : uploadPicture,
+							        'onFallback' : function() {
+							            alert('未检测到兼容版本的Flash.');
+							        }
+							    });
+								function uploadPicture(file, data){
+							    	var data = $.parseJSON(data);
+							    	var src = '';
+							        if(data.status){
+							        	$("#icon").val(data.id);
+							        	src = data.url || '__ROOT__' + data.path;
+							        	$("#icon").parent().find('.upload-img-box').html(
+							        		'<div class="upload-pre-item"><img src="' + src + '"/></div>'
+							        	);
+							        } else {
+							        	updateAlert(data.info);
+							        	setTimeout(function(){
+							                $('#top-alert').find('button').click();
+							                $(that).removeClass('disabled').prop('disabled',false);
+							            },1500);
+							        }
+							    }
+								</script>
+						  </td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+						<input type="hidden" name="id" value="{$info.id|default=''}">
+						<input type="hidden" name="pid" value="{:isset($category['id'])?$category['id']:$info['pid']}">
+						<button type="submit" id="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          </div>
+		        </div>
+		    </form>
+    	</div>
+</block>
+

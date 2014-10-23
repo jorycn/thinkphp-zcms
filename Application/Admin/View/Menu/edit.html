@@ -1,0 +1,74 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="g-wrap jj">
+        <div class="u-tab">
+            <ul class="cc">
+                <li class="current"><a href="javascript:;">{:isset($info['id'])?'编辑':'新增'}后台菜单</a></li>
+            </ul>
+        </div>
+        <div class="common-form">
+            <form action="{:U()}" method="post" class="form-horizontal">
+                <div class="table_list">
+                    <table width="100%">
+                    <tbody>
+                        <tr>
+                          <td><label class="item-label">标题:</label></td>
+                          <td><input type="text" class="input input-large" name="title" value="{$info.title|default=''}"><span class="check-tips">用于后台显示的配置标题</span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">模块:</label></td>
+                          <td><input type="text" class="input input-large" name="module" value="{$info.module|default='Admin'}"><span class="check-tips">方法属于哪个模块，在权限配置中使用</span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">排序:</label></td>
+                          <td><input type="text" class="input input-small" name="sort" value="{$info.sort|default=0}"><span class="check-tips">用于分组显示的顺序</span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">链接:</label></td>
+                          <td><input type="text" class="input input-large" name="url" value="{$info.url|default=''}"><span class="check-tips">U函数解析的URL或者外链,如：Admin/Menu</span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">上级菜单</label></td>
+                          <td><select name="pid">
+                            <volist name="Menus" id="menu">
+                                <option value="{$menu.id}">{$menu.title_show}</option>
+                            </volist>
+                        </select><span class="check-tips">所属的上级菜单</span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">图标:</label></td>
+                          <td><input type="text" class="input input-large" name="ico" value="{$info.ico|default=''}"><span class="check-tips">左侧显示分组如：fa-desktop</span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">是否隐藏</label></td>
+                          <td><input type="radio" name="hide" value="1">是<input type="radio" name="hide" value="0">否<span class="check-tips"></span></td>
+                        </tr>
+                        <tr>
+                          <td><label class="item-label">说明</label></td>
+                          <td>
+                            <textarea class="input-large" name="tip">{$info.tip|default=''}</textarea><span class="check-tips">菜单详细说明</span></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    
+                </div>
+                <div class="btn_wrap">
+                    <div class="btn_wrap_pd">
+                          <input type="hidden" name="id" value="{$info.id|default=''}">
+                          <button type="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 认</button>
+                          <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        Think.setValue("pid", {$info.pid|default = 0});
+        Think.setValue("hide", {$info.hide|default = 0});
+        Think.setValue("is_dev", {$info.is_dev|default = 0});
+    </script>
+</block>

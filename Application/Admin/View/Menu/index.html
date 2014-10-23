@@ -1,0 +1,66 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="g-wrap jj">
+        <div class="u-tab">
+            <ul class="cc">
+              <li class="current"><a href="{:U('Menu/index')}">栏目管理 </a></li>
+              <li><a href="{:U('Menu/add')}">添加栏目 </a></li>
+            </ul>
+        </div>
+        <div class="common-form">
+            <form method="post" class="menu-form" action="{:U('sort')}">
+            <div class="table_list j-hidden-level">
+                <table width="100%">
+                <thead>
+                  <tr>
+                    <td width="80">排序</td>
+                    <td width="100">ID</td>
+                    <td>栏目名称</td>
+                    <td>所属分组</td>
+                    <td>URL</td>
+                    <td>隐藏</td>
+                    <td>操作</td>
+                  </tr>
+                </thead>
+                <tbody>
+                    {$taxonomys}
+                </tbody>
+                </table>
+                <div class="btn_wrap">
+                  <div class="btn_wrap_pd">
+                    <a class="btn btn_small J_ajax_get" href="{:U('Admin/Index/setKey',array('cid'=>$_GET['menuId'],'title'=>$meta_title))}"><i class="fa fa-heart"></i></a>
+                    <button class="btn btn_submit mr10 J_ajax_post" type="submit" target-form='menu-form'>排序</button>
+                  </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        (function($){
+          var $level = $(".j-hidden-level table").find("tbody tr");
+          $level.each(function(){
+              var $this_level = $(this).attr('data-parentid');
+              if($this_level=='0'){
+                  $(this).show();
+              }
+              if($(this).next('tr').attr('data-parentid')>$this_level){
+                $(this).find('td:eq(2)').append("&nbsp;&nbsp;<i class='fa fa-caret-right'></i>");
+              }
+              if($(this).next('tr').attr('data-parentid')>0){
+                 $(this).addClass('hand');
+                 $(this).click(function(){
+                    var $i = $(this).find('i');
+                    $i.toggleClass('fa-caret-right');
+                    $i.toggleClass('fa-caret-down');
+                    $(this).nextAll('tr[data-parentid='+$(this).attr('data-id')+']').toggle();
+                 })
+              }
+          });
+        })(jQuery);
+    </script>
+</block>

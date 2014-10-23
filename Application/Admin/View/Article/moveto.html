@@ -1,0 +1,42 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc tab-nav">
+				<li data-tab="tab1" class="current"><a href="javascript:void(0);">请选择移动到的分类</a></li>
+		    </ul>
+		</div>
+		<!-- 数据表格 -->
+		<div class="tab-content table_list">
+		<!-- 表单 -->
+		<form id="form" action="{:U('')}" method="post" class="form-horizontal">
+				<div id="tab1" class="tab-pane in tab1">
+					<table class="" width="100%">
+				    <tbody>
+						<tr>
+				            <td width="20%"><label class="item-label">栏目</td>
+				            <td width="80%">
+				            	<select name="category_id">
+				            		<option value="0">----请选择----</option>
+				            		{$category}
+				            	</select>
+				            </td>
+						</tr>
+					</tbody>
+				    </table> 
+			     </div>
+			<div class="btn_wrap">
+	          <div class="btn_wrap_pd">
+	            	<button class="btn submit-btn J_ajax_post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+					<a class="btn btn-return" href="{$Think.cookie.__forward__}">返 回</a>
+	          </div>
+	        </div>
+	    </form>
+	    </div>
+	</div>
+</div>
+
+</block>
+

@@ -1,0 +1,110 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc">
+		      	<li class="current"><a href="{:U('index')}">配置管理</a></li>
+		        <foreach name="group" item="vo">
+					<neq name="group_id" value="$key">
+		          	<li><a href="{:U('index?group='.$key)}">{$vo}</a></li><else/><li><a href="javascript:;">{$vo}</a></neq></li>
+		        </foreach>
+		      </ul>
+		</div>
+	    <div class="search_type cc mb10 search-form">
+	      	<div class="mb10">
+	        	<input type="text" name="name" class="search-input input input-medium" value="{:I('name')}" placeholder="请输入配置名称">
+	        	<a class="btn" href="javascript:;" id="search" url="{:U('config/index')}">搜索</a>
+	      	</div>
+	    </div>
+		<!-- 数据表格 -->
+	    <div class="table_list">
+			<table class="" width="100%">
+		    <thead>
+		        <tr>
+					<th class="row-selected">
+						<input class="checkbox check-all" type="checkbox">
+					</th>
+					<th>ID</th>
+					<th>名称</th>
+					<th>标题</th>
+					<th>分组</th>
+					<th>类型</th>
+					<th>操作</th>
+				</tr>
+		    </thead>
+		    <tbody>
+				<notempty name="list">
+				<volist name="list" id="config">
+					<tr>
+						<td><input class="ids row-selected" type="checkbox" name="id[]" value="{$config.id}"></td>
+						<td>{$config.id}</td>
+						<td><a href="{:U('edit?id='.$config['id'])}">{$config.name}</a></td>
+						<td>{$config.title}</td>
+						<td>{$config.group|get_config_group}</td>
+						<td>{$config.type|get_config_type}</td>
+						<td>
+							<a title="编辑" href="{:U('edit?id='.$config['id'])}">编辑</a>
+							<a class="confirm J_ajax_get" title="删除" href="{:U('del?id='.$config['id'])}">删除</a>
+						</td>
+					</tr>
+				</volist>
+				<else/>
+				<td colspan="6" class="input-center"> aOh! 暂时还没有内容! </td>
+				</notempty>
+			</tbody>
+		    </table> 
+		</div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$_page}
+	    </div>
+	</div>
+</div>
+
+</block>
+
+<block name="script">
+<script type="text/javascript">
+$(function(){
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url');
+        var query  = $('.search-form').find('input').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+        query = query.replace(/^&/g,'');
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
+            url += '?' + query;
+        }
+		window.location.href = url;
+	});
+	//回车搜索
+	$(".search-input").keyup(function(e){
+		if(e.keyCode === 13){
+			$("#search").click();
+			return false;
+		}
+	});
+	//点击排序
+	$('.list_sort').click(function(){
+		var url = $(this).attr('url');
+		var ids = $('.ids:checked');
+		var param = '';
+		if(ids.length > 0){
+			var str = new Array();
+			ids.each(function(){
+				str.push($(this).val());
+			});
+			param = str.join(',');
+		}
+
+		if(url != undefined && url != ''){
+			window.location.href = url + '/ids/' + param;
+		}
+	});
+});
+</script>
+</block>

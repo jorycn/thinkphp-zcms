@@ -1,0 +1,20 @@
+﻿<extend name="Base/common" />
+
+<block name="body">
+   <div class="content paddingWidth">
+   <div class="padTop20"></div>
+        <div class="panel panel-default">
+           <div class="panel-body" style="margin-top:15px;margin-bottom:15px; ">
+              <h2>{$info.title}</h2>
+              {$info.content}
+          </div>
+        </div>
+            
+        <div id="reply_add" style="padding-top:20px;">
+          {:hook('documentDetailAfter',$info)} 
+        </div>
+      </div>  
+    </div>
+</block>
+
+   

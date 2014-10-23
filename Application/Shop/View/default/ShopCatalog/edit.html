@@ -1,0 +1,190 @@
+<extend name="./Application/Admin/View/Public/base.html" />
+
+<block name="body">
+	<!-- 标题栏 -->
+		<div class="g-wrap tab-wrap">
+        <div class="u-tab">
+            <ul class="cc tab-nav">
+              	<li data-tab="tab1" class="current"><a href="javascript:void(0);">基本设置</a></li>
+              	<li data-tab="tab2"><a href="javascript:void(0);">SEO设置</a></li>
+              	<li data-tab="tab3"><a href="javascript:void(0);">模板设置</a></li>
+            </ul>
+        </div>
+        <div class="common-form tab-content">
+		    <form action="{:U()}" method="post" class="form-horizontal">
+		    	<div id="tab1" class="tab-pane in tab1 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">上级分类:</label></td>
+			              <td><input type="text" class="input input-large" disabled="disabled" value="{$category['title']|default='无'}"/></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">分类名称:</td>
+			              <td><input type="text" name="title" class="input input-large" value="{$info.title|default=''}"><span class="check-tips">（名称不能为空）</span></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">分类标识:</td>
+			              <td><input type="text" name="name" class="input input-large" value="{$info.name|default=''}"><span class="check-tips">（英文字母）</span></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">发布内容</td>
+			              <td><label class="inline radio"><input type="radio" name="allow_publish" value="0">不允许</label>
+								<label class="inline radio"><input type="radio" name="allow_publish" value="1" checked>仅允许后台</label>
+								<label class="inline radio"><input type="radio" name="allow_publish" value="2" >允许前后台</label></td>
+			            </tr>
+			            <tr>
+			              <td width="20%">是否审核</td>
+			              <td><label class="inline radio"><input type="radio" name="check" value="0" checked>不需要</label>
+								<label class="inline radio"><input type="radio" name="check" value="1">需要</label></td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">可见性</label></td>
+			              	<td>
+			              		<select name="display">
+									<option value="1">所有人可见</option>
+									<option value="0">不可见</option>
+									<option value="2">管理员可见</option>
+								</select>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">作为导航</label></td>
+			              	<td>
+			              		<label class="inline radio"><input type="radio" name="nav" value="1" checked="checked">是</label>
+								<label class="inline radio"><input type="radio" name="nav" value="0">否</label>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">回复</label></td>
+			              	<td>
+			              		<label class="inline radio"><input type="radio" name="reply" value="1" checked>允许</label>
+								<label class="inline radio"><input type="radio" name="reply" value="0">不允许</label>
+							</td>
+			            </tr>
+			            <tr>
+			              	<td width="20%"><label class="item-label">排序</label></td>
+			              	<td>
+			              		<input type="text" name="sort" class="input input-small" value="{$info.sort|default=0}">
+							</td>
+			            </tr>
+			            <tr>
+			              <td width="20%"><label class="item-label">分类图标</label></td>
+			              <td>
+				              	<input type="file" id="upload_picture">
+								<input type="hidden" name="icon" id="icon" value="{$info['icon']|default=''}"/>
+								<div class="upload-img-box">
+								<notempty name="info['icon']">
+									<div class="upload-pre-item"><img src="__ROOT__{$info.icon|get_cover='path'}"/></div>
+								</notempty>
+								</div>
+								<script type="text/javascript">
+								//上传图片
+							    /* 初始化上传插件 */
+								$("#upload_picture").uploadify({
+							        "height"          : 30,
+							        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+							        "fileObjName"     : "download",
+							        "buttonText"      : "上传图片",
+							        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+							        "width"           : 120,
+							        'removeTimeout'	  : 1,
+							        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+							        "onUploadSuccess" : uploadPicture,
+							        'onFallback' : function() {
+							            alert('未检测到兼容版本的Flash.');
+							        }
+							    });
+								function uploadPicture(file, data){
+							    	var data = $.parseJSON(data);
+							    	var src = '';
+							        if(data.status){
+							        	$("#icon").val(data.id);
+							        	src = data.url || '__ROOT__' + data.path;
+							        	$("#icon").parent().find('.upload-img-box').html(
+							        		'<div class="upload-pre-item"><img src="' + src + '"/></div>'
+							        	);
+							        } else {
+							        	updateAlert(data.info);
+							        	setTimeout(function(){
+							                $('#top-alert').find('button').click();
+							                $(that).removeClass('disabled').prop('disabled',false);
+							            },1500);
+							        }
+							    }
+								</script>
+						  </td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div id="tab2" class="tab-pane tab2 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">网页标题:</label></td>
+			              <td><input type="text" name="meta_title" class="input input-large" value="{$info.meta_title|default=''}"></td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">关键字:</label></td>
+			              <td><textarea name="keywords">{$info.keywords|default=''}</textarea></td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">描述:</label></td>
+			              <td><textarea name="description">{$info.description|default=''}</textarea></td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div id="tab3" class="tab-pane tab3 table_list">
+				    <table width="100%">
+			        <tbody>
+			            <tr>
+			              <td width="20%"><label class="item-label">频道模板:</label></td>
+			              <td><input type="text" name="template_index" class="input input-large" value="{$info.template_index|default=''}"></td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">列表模板:</label></td>
+			              <td><input type="text" name="template_lists" class="input input-large" value="{$info.template_lists|default=''}"></td>
+			            </tr>
+			            <tr>
+			              <td><label class="item-label">详情模板:</label></td>
+			              <td><input type="text" name="template_detail" class="input input-large" value="{$info.template_detail|default=''}"></td>
+			            </tr>
+			        </tbody>
+			      	</table>
+			    </div>
+			    <div class="btn_wrap">
+		          <div class="btn_wrap_pd">
+						<input type="hidden" name="id" value="{$info.id|default=''}">
+						<input type="hidden" name="pid" value="{:isset($category['id'])?$category['id']:$info['pid']}">
+						<button type="submit" id="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">确 定</button>
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+		          </div>
+		        </div>
+		    </form>
+    	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		<present name="info.id">
+		Think.setValue("allow_publish", {$info.allow_publish|default=1});
+		Think.setValue("check", {$info.check|default=0});
+		Think.setValue("model[]", {$info.model|json_encode} || [1]);
+		Think.setValue("type[]", {$info.type|json_encode} || [2]);
+		Think.setValue("display", {$info.display|default=1});
+		Think.setValue("reply", {$info.reply|default=0});
+		Think.setValue("reply_model[]", {$info.reply_model|json_encode} || [1]);
+		</present>
+		$(function(){
+			showTab();
+			$("input[name=reply]").change(function(){
+				var $reply = $(".form-item.reply");
+				parseInt(this.value) ? $reply.show() : $reply.hide();
+			}).filter(":checked").change();
+		});
+		//导航高亮
+		highlight_subnav('{:U('Category/index')}');
+	</script>
+</block>

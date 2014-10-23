@@ -1,0 +1,98 @@
+<extend name="./Application/Admin/View/Public/base.html" />
+
+<block name="body">
+	<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+	<div class="g-wrap">
+		<!-- 按钮工具栏 -->
+		<div class="u-tab">
+		    <ul class="cc tab-nav">
+				<li order-tab="tab" class="current"><a href="javascript:void(0);">订单详情</a></li>
+		    </ul>
+		</div>
+		<!-- 数据表格 -->
+		<div class="tab-content table_list">
+		<!-- 表单 -->
+			<table class="order-table" width="100%">
+			    <tbody>
+			    	<tr>
+			    		<td width="20%">订单号</td>
+			    		<td>{$order.oid}</td>
+			    	</tr>
+			    	<tr>
+			    		<td width="20%">订单合计</td>
+			    		<td><span class="red bold">{$order.price|get_format_price}</span></td>
+			    	</tr>
+			    	<tr>
+			    		<td width="20%">货运地址</td>
+			    		<td><span class="bold">{$order.address}</span></td>
+			    	</tr>
+			    	<tr>
+			    		<td width="20%">下单时间</td>
+			    		<td><span class="bold">{$order.create_time|get_datetime}</span></td>
+			    	</tr>
+			    </tbbody>
+			</table>
+			<table class="order-table u-table-left" width="100%">
+				<tbody>
+					<tr>
+			    		<th colspan="4" class="thead"><p>用户信息</p></th>
+			    	</tr>
+			    	<tr>
+			    		<td width="10%">姓名：</td><td  width="10%">{$user.nickname}</td><td width="10%">最后登陆ip：</td><td>{$user.last_login_ip|long2ip}</td>
+			    	</tr>
+			    	<tr>
+				</tbody>
+			</table>
+			<notempty name="shipping">
+			<table class="order-table u-table-left" width="100%">
+				<tbody>
+					<tr>
+			    		<th colspan="4" class="thead"><p>货运信息</p></th>
+			    	</tr>
+			    	<tr>
+			    		<td width="10%">货运方式：</td><td  width="10%">{$shipping.name}</td><td width="10%">价格：</td><td>{$shipping.price}</td>
+			    	</tr>
+			    	<tr>
+				</tbody>
+			</table>
+			</notempty>
+			<table class="order-table" width="100%">
+				<tbody>
+					<tr>
+			    		<th colspan="4" class="thead"><p>订单详情</p></th>
+			    	</tr>
+			    	<volist name="product" id="vo">
+			    		<tr>
+			    			<td>{$vo.id}</td>
+			    			<td>{$vo.title|msubstr=0,25,'utf-8'}</td>
+			    			<td><img src="{$vo.thumb|get_product_image}" width="75" height="75" /></td>
+			    			<td>{$vo.price|get_format_price}</td>
+			    		</tr>
+			    	</volist>
+			    	<tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan='3' align="right">小计：</td><td><span class="red bold">{$order.price|get_format_price}</span></td>
+					</tr>
+					<notempty name="shipping">
+					<tr>
+						<td colspan='3' align="right">运费：</td><td><i class="fa fa-plus"></i>&nbsp;<span class="red bold">{$shipping.price|get_format_price}</span></td>
+					</tr>
+					</notempty>
+					<tr>
+						<td colspan='3' align="right">共计：</td><td><span class="red bold f24">{$order.globalTotal|get_format_price}</span></td>
+					</tr>
+				</tfoot>
+			</table>
+			    	
+		    <div class="btn_wrap">
+	          <div class="btn_wrap_pd">
+					<button type="submit" id="submit" class="btn submit-btn J_ajax_post" target-form="form-horizontal">发货</button>
+	          </div>
+	        </div>
+        </div>
+	</div>
+</div>
+
+</block>

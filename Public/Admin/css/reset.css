@@ -1,0 +1,413 @@
+/* reset */
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend{font:12px/1.14 arial,\5b8b\4f53;color:#333;outline:0;}
+body{background:#fff;}
+a,a:hover{color:#333;}
+body{
+    overflow-x:hidden;
+}
+.s6{
+    color:#666;
+}
+/*
+===================
+间距
+===================
+*/
+.mb5{
+    margin-bottom:5px !important;
+}
+.mb10{
+    margin-bottom:10px !important;
+}
+.mb15{
+    margin-bottom:15px !important;
+}
+.mb20{
+    margin-bottom:20px !important;
+}
+.mr5{
+    margin-right:5px !important;
+}
+.mr10{
+    margin-right:10px !important;
+}
+.mr15{
+    margin-right:15px !important;
+}
+.mr20{
+    margin-right:20px !important;
+}
+.mt10{
+    margin-top: 10px !important;
+}
+.p5{
+    padding:5px;
+}
+.p10{
+    padding:10px;
+}
+.p15{
+    padding:15px;
+}
+.p20{
+    padding:20px;
+}
+
+/* 全局按钮样式 ================================================================================ */
+
+/* 通用自定义按钮-默认蓝色 */
+.u-btn{background: #e6e6e6 url(../images/admin/btn.png);border: 1px solid #infoinfoinfo;border-radius: 2px;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);padding:6px 10px;display: inline-block;cursor: pointer;font-size: 100%;line-height: normal;text-decoration: none;overflow: visible;vertical-align: middle;text-align: center;zoom: 1;white-space: nowrap;font-family: inherit;_position: relative;margin: 0;}
+.u-btn,.u-btn:hover{color:#333;text-decoration:none;}
+.u-btn:hover,.u-btn:focus{background:#eee;}
+.u-btn:active{box-shadow:inset 0 1px 4px rgba(0,0,0,0.2);}
+.u-btn::-moz-focus-inner{padding:0;margin:0;border:0;}
+.u-btn .btnsel{display:inline-block;vertical-align:middle;border-style:solid;border-width:4px 4px 0;border-color:rgba(255,255,255,0.8) transparent transparent;}
+.u-btn:hover .btnsel,.u-btn:focus .btnsel{border-top-color:rgba(255,255,255,1);}
+/* 较大 */
+.u-btn-lg{padding:0 15px;height:36px;line-height:36px;font-size:18px;}
+.u-btn-lg .btnsel{border-width:5px 5px 0;}
+/* 较小 */
+.u-btn-sm{padding:0 10px;height:22px;line-height:22px;}
+
+.u-btn-index{
+    display: inline-block;color: #FFF !important;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;border-radius: 0;box-shadow: none !important;-webkit-transition: all ease .15s;-moz-transition: all ease .15s;-o-transition: all ease .15s;transition: all ease .15s;cursor: pointer;vertical-align: middle;margin: 0; position: relative; padding: 0 12px 1px;line-height: 32px;font-size: 14px;margin:0 5px;
+}
+.u-btn-large {
+    padding: 0 14px 1px;line-height: 38px;border-width: 6px;font-size: 16px
+}
+
+.u-btn-small {
+    padding: 0 8px;line-height: 24px;border-width: 4px;font-size: 13px
+}
+.u-btn-mini {
+    padding: 0 5px;line-height: 22px;border-width: 2px;font-size: 12px
+}
+
+.u-btn-minier {
+    padding: 0 4px;line-height: 18px;border-width: 1px;font-size: 11px
+}
+button.u-btn:active {
+    top: 1px;left: 1px
+}
+
+/* 红色 */
+.u-btn-danger{*background: #9f161b;border-color:#9f161b;background:-webkit-gradient(linear,0% 0%,0% 100%,from(#ee232a),to(#cc1c23));background:-webkit-linear-gradient(#ee232a,#cc1c23);background:-moz-linear-gradient(#ee232a,#cc1c23);background:-ms-linear-gradient(#ee232a,#cc1c23);background:linear-gradient(#ee232a,#cc1c23);}
+.u-btn-danger:hover,.u-btn-danger:focus{background:#cc1c23;}
+/* 黄色 */
+.u-btn-warning{*background: #e1962d;border-color:#e1962d;background:-webkit-gradient(linear,0% 0%,0% 100%,from(#fbb149),to(#f8960a));background:-webkit-linear-gradient(#fbb149,#f8960a);background:-moz-linear-gradient(#fbb149,#f8960a);background:-ms-linear-gradient(#fbb149,#f8960a);background:linear-gradient(#fbb149,#f8960a);}
+.u-btn-warning:hover,.u-btn-warning:focus{background:#f8960a;}
+/* 绿色 */
+.u-btn-success{
+    *background: #52a552;
+    border-color:#52a552;background:-webkit-gradient(linear,0% 0%,0% 100%,from(#68c668),to(#50b150));background:-webkit-linear-gradient(#68c668,#50b150);background:-moz-linear-gradient(#68c668,#50b150);background:-ms-linear-gradient(#68c668,#50b150);background:linear-gradient(#68c668,#50b150);}
+.u-btn-success:hover,.u-btn-success:focus{background:#50b150;}
+/*灰色*/
+.u-btn-info{*background: #1262B7;border-color:#d0d0d0;text-shadow:0 1px rgba(255,255,255,0.8);background:-webkit-gradient(linear,0% 0%,0% 100%,from(#1E2EE4),to(#1262B7));background:-webkit-linear-gradient(#1E2EE4,#1262B7);background:-moz-linear-gradient(#1E2EE4,#1262B7);background:-ms-linear-gradient(#1E2EE4,#1262B7);background:linear-gradient(#1E2EE4,#1262B7);}
+.u-btn-info,.u-btn-info:hover{color:#333;}
+.u-btn-info:hover,.u-btn-info:focus{background:#1262B7;}
+.u-btn-info .btnsel{border-top-color:rgba(0,0,0,0.6);}
+.u-btn-info:hover .btnsel,.u-btn-info:focus .btnsel{border-top-color:rgba(0,0,0,1);}
+
+/* 全局按钮样式 ================================================================================ */
+.input{
+    padding: 4px 4px;font-size: 100%;line-height: 18px;border: 1px solid #ccc;background-color: #fff;box-shadow: 2px 2px 2px #f0f0f0 inset;vertical-align: middle;font-family: inherit;width:120px;
+}
+.focus{
+    -webkit-box-shadow: none;border-width: 1.2px;-moz-box-shadow: none;box-shadow: none;color: #696969;border-color: #42CAF5;background-color: #F8F3EA;
+}
+textarea.autosize-transition {
+    -webkit-transition-duration: "height 0.2s";-moz-transition-duration: "height 0.2s";-o-transition-duration: "height 0.2s";transition-duration: "height 0.2s"
+}
+.input-large,textarea{
+    width:40%;
+}
+.input-medium{
+    width:240px;
+}
+.input-small{
+    width:60px;
+}
+.input-xsmall{
+    width:30px;
+}
+/* 全局样式 ================================================================================ */
+.g-wrap,.dd-wrap{
+    padding:20px 20px 0px 20px;
+}
+.wrap_pop{
+    padding:20px;
+}
+/*主选项卡*/
+.u-tab{
+    margin-bottom:15px;height:35px;
+}
+.u-tab ul{
+    height:35px;float:left;
+}
+.u-tab li,.u-tab .return{
+    float:left;
+}
+.u-tab li a,
+.u-tab .return a{
+    float:left;line-height:32px;color:#666;padding:0 15px;text-align:center;
+}
+.u-tab li a{
+    border-bottom:2px solid #aaa;
+}
+.u-tab li a:hover{
+    border-bottom:2px solid #266aae;color:#333;text-decoration:none;
+}
+.u-tab li.current a{
+    border-bottom:2px solid #266aae;font-weight:700;color:#266aae;
+}
+.u-tab .return a{
+    background:url(../images/admin/content/return.png) 2px center no-repeat;color:#991262B70;padding:0 20px;
+}
+
+/*TAG切换样式，需要白色背景*/
+.pop_nav {
+    padding:10px 15px 0;
+    margin-bottom:10px;
+}
+.pop_nav ul{
+    border-bottom:1px solid #266AAE;
+    padding:0 5px;
+    height:25px;
+    clear:both;
+}
+.pop_nav ul li{
+    float:left;
+    margin-right:10px;
+}
+.pop_nav ul li a{
+    float:left;
+    display:block;
+    padding:0 10px;
+    height:25px;
+    line-height:23px;
+}
+.pop_nav ul li.current a{
+    border:1px solid #266AAE;
+    border-bottom:0 none;
+    color:#333;
+    font-weight:700;
+    background:#fff;
+    position:relative;
+    border-radius:2px;
+    margin-bottom:-1px;
+}
+/*侧边导航*/
+@CHARSET "UTF-8";
+ul, ol {
+padding: 0;
+margin: 0;
+}
+.macro-component-tab{
+    
+}
+
+.macro-component-tabitem{
+    float:left;display: block;background: #0b559f;padding: 5px 8px 4px 8px;height:31px;min-width: 101px;text-align: center;margin: 0 1px 0 1px;position: relative;
+}
+.macro-component-tabclose{
+    position: absolute;
+    right:6px;
+    top:8px;
+}
+.macro-component-tabclose-icon{
+    color:#fff;
+}
+.macro-component-tabitem.current{
+    background: #04386d;
+}
+
+.macro-component-tabitem:hover{
+    background: #04386d;
+}
+
+.macro-tabs-item-text{
+    font-family: 'Microsoft Yahei',verdana;
+    font-size: 14px;font-weight: bold;
+    color:#fff;
+    line-height: 30px;
+}
+
+.task-changebt{
+    display: none;
+    float: left;
+    width: 30px;
+    height: 40px;
+    background: #0b559f;
+    color:#fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 18px;
+}
+
+.task-changebt:hover{
+    background: #04386d;
+    text-decoration: none;
+    color:#fff;font-weight: bold
+}
+
+#task-content{
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
+#right_tools_wrapper{position: absolute;top:50px; right: 20px;}
+
+#right_tools_wrapper span{
+    vertical-align:middle;
+}
+#right_tools_wrapper span .right_tool_icon{width: 24px;height: 24px;font-size: 24px;color: #fff;}
+/*blue*/
+.navbar .navbar-inner{
+    background: #1262B7;
+}
+
+.breadcrumbs {
+background: #1262B7;
+}
+#content{padding:0;}
+
+.macro-component-tabitem{
+    background: #0b559f;
+}
+
+.macro-component-tabitem.selected{
+    background: #04386d;
+}
+
+.macro-component-tabitem:hover{
+    background: #04386d;
+}
+
+.macro-tabs-item-text{
+    font-family: 'Microsoft Yahei',verdana;
+    font-size: 14px;font-weight: bold;
+    color:#fff;
+    line-height: 30px;
+}
+
+/* 列表分页 ================================================================================ */
+/* 列表分页 */
+.page a,.page span {
+    color: #686868;border: 1px solid #CCCCCC;
+}
+.page a:hover{
+    background: #E1E1E1;
+}
+.page .current {
+    border-top: 3px solid #1262B7;height: 28px;line-height: 26px;
+}
+.page {
+    margin: 10px 0;*zoom: 1;
+}
+.page:before,.page:after {
+    display: table;content: "";
+}
+.page:after {
+    clear:both;
+}
+.page a,.page span {
+    float: left;margin-left: -1px;padding: 0 14px;height: 30px;line-height: 30px;color: #1262B7;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;
+}
+.page a:hover{
+    text-decoration: none; background-color: #1262B7;
+}
+
+/*btn样式第二波*/
+/*
+===================
+按钮【可在input、button、a使用，可自由组合】
+>>  btn                                 默认按钮
+>>  btn btn_big                 大按钮
+>>  btn btn_error               错误按钮
+>>  btn btn_success         确认按钮
+>>  btn btn_submit          提交按钮
+===================
+*/
+button::-moz-focus-inner, 
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.btn {
+    color: #333;
+    background:#e6e6e6 url(../images/admin/btn.png);
+    border: 1px solid #c4c4c4;
+    border-radius: 2px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    padding:4px 10px;
+    display: inline-block;
+    font-size:100%;
+    line-height: normal;
+    text-decoration:none;
+    overflow:visible;
+    vertical-align: middle;
+    text-align:center;
+    zoom: 1;
+    white-space:nowrap;
+    font-family:inherit;
+    _position:relative;
+    margin:0;
+}
+a.btn{
+    *padding:5px 10px 2px !important;
+}
+input.btn,
+button.btn{
+    *padding: 4px 10px 1px !important;
+}
+.btn em{
+    font-size:10px;
+    font-style:normal;
+    padding-left:2px;
+    font-family:Arial;
+    vertical-align:1px;
+}
+.btn .add{
+    width:9px;
+    height:9px;
+    background:url(../images/admin/content/btn_add.png) center center no-repeat;
+    display:inline-block;
+    vertical-align:middle;
+    margin:-3px 5px 0 -3px;
+    line-height:9px;
+}
+/*悬停*/
+.btn:hover {
+    background-position: 0 -40px;
+    color: #333;
+    text-decoration: none;
+}
+/*点击后*/
+.btn:active {
+    background-position:0 -81px;
+}
+/*大按钮*/
+.btn_big {
+    font-size: 1.2em;
+    line-height: normal;
+    padding: 7px 18px;
+    border-radius: 2px;
+}
